@@ -1,6 +1,8 @@
 # facets-nf
 ## Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing
 
+## UNDER DEVELOPMENT
+
 [![CircleCI](https://circleci.com/gh/IARCbioinfo/template-nf.svg?style=svg)](https://circleci.com/gh/IARCbioinfo/template-nf)
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/iarcbioinfo/template-nf/)
 [![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/1404)
@@ -15,8 +17,7 @@
 
 1. This pipeline is based on [nextflow](https://www.nextflow.io). As we have several nextflow pipelines, we have centralized the common information in the [IARC-nf](https://github.com/IARCbioinfo/IARC-nf) repository. Please read it carefully as it contains essential information for the installation, basic usage and configuration of nextflow and our pipelines.
 2. External software:
-- ...
-- ...
+- [facets](https://github.com/mskcc/facets)
 
 You can avoid installing all the external software by only installing Docker. See the [IARC-nf](https://github.com/IARCbioinfo/IARC-nf) repository for more information.
 
@@ -24,8 +25,8 @@ You can avoid installing all the external software by only installing Docker. Se
 ## Input
   | Type      | Description     |
   |-----------|---------------|
-  | input1    | ...... |
-  | input2    | ...... |
+  | --input_folder    | Folder containing BAM files (pairs of T/N) |
+  | --output_folder    | Path to output folder |
 
   Specify the test files location
 
@@ -50,12 +51,10 @@ Flags are special parameters without value.
 | Name      | Description     |
 |-----------|-----------------|
 | --help    | Display help |
-| --flag2    |      .... |
-
 
 ## Usage
   ```
-  ...
+  nextflow run facets.nf --input_folder path/to/BAM ... --output_folder path/to/output
   ```
 
 ## Output
