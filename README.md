@@ -25,8 +25,9 @@ You can avoid installing all the external software by only installing Docker. Se
 ## Input
   | Type      | Description     |
   |-----------|---------------|
-  | --input_folder    | Folder containing BAM files (pairs of T/N) |
-  | --output_folder    | Path to output folder |
+  | --tumor_bam_folder    | Folder containing tumor BAM files |
+  | --normal_bam_folder    | Folder containing normal BAM files|
+  
 
   Specify the test files location
 
@@ -35,14 +36,17 @@ You can avoid installing all the external software by only installing Docker. Se
   * #### Mandatory
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
-| --param1    |            xx | ...... |
-| --param2    |            xx | ...... |
+| --analysis_type    |            exome/genome | Type of analysis: whole exome or whole genome  |
+| --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
+| --coverage   |            20 | Normal bams coverage |
+| --segmentation    |            2 | Number between 1 and 4 |
 
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
-| --param3   |            xx | ...... |
-| --param4    |            xx | ...... |
+| --facets_stats_out   |            facets_stats_summary.txt | Name of stats summary file |
+| --plot_file_out    |            png | Plot output in png or pdf |
+| --out_folder    |            facets_out | Folder name for output files (by default current folder)|
 
   * #### Flags
 
@@ -54,7 +58,7 @@ Flags are special parameters without value.
 
 ## Usage
   ```
-  nextflow run facets.nf --input_folder path/to/BAM ... --output_folder path/to/output
+  nextflow run facets.nf --tumor_bam_folder path/to/T_BAMS --tumor_bam_folder path/to/N_BAMS --analysis_type exome --ref hg38 --coverage 20 --segmentation 2 --out_folder path/to/output
   ```
 
 ## Output
