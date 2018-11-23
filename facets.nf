@@ -70,9 +70,9 @@ if (params.help) {
     log.info "Optional arguments:"
     log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)
     log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)
-    log.info "--min-map-quality
-    log.info "--min-base-quality 
-    log.info "--pseudo-snps
+    log.info "--min-map-quality	     NUMBER		 
+    log.info "--min-base-quality     NUMBER
+    log.info "--pseudo-snps          NUMBER
     log.info "--coverage             NUMBER              Normal bams coverage"   
     log.info "--segmentation         NUMBER              Segmentation: number between 1 and 4"
     log.info "--facets_stats_out     FILE                Name of stats summary file
