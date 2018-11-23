@@ -139,18 +139,18 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 
 
   if (params.analysis_type == 'genome' ) {
-			snp_nbhd = 1000   
-			cval_preproc = 35
-			cval_proc1 = 300
-			cval_proc2 = 150
-			min_read_count = 20
+			params.snp_nbhd = 1000   
+			params.cval_preproc = 35
+			params.cval_proc1 = 300
+			params.cval_proc2 = 150
+			params.min_read_count = 20
 			}
    if params.analysis_type == 'exome') {
-			snp_nbhd = 250   
-			cval_preproc = 25
-			cval_proc1 = 150
-			cval_proc2 = 75
-			min_read_count = 35
+			params.snp_nbhd = 250   
+			params.cval_preproc = 25
+			params.cval_proc1 = 150
+			params.cval_proc2 = 75
+			params.min_read_count = 35
 			}
 process snppileup {
 # Input folder with pairs of bam => Output: pairX.csv.gz
