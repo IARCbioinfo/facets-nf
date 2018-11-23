@@ -48,6 +48,9 @@ You can avoid installing all the external software by only installing Docker. Se
 |-----------|---------------|-----------------|
 | --suffix_tumor   |            "T" | specific suffix for tumor bam file name |
 | --suffix_normal   |            "N" | specific suffix for normal bam file name |
+| --min-map-quality   |            15 | 
+| --min-base-quality    |            20 | 
+| --pseudo-snps   |            100 | 
 | --facets_stats_out   |            facets_stats_summary.txt | Name of stats summary file |
 | --plot_file_out    |            png | Plot output in png or pdf |
 | --out_folder    |            facets_out | Folder name for output files (by default current folder)|
