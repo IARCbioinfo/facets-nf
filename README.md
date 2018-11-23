@@ -36,14 +36,18 @@ You can avoid installing all the external software by only installing Docker. Se
   * #### Mandatory
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
+| --snppileup_path    |            tools/ | Path to snppileup software 
 | --analysis_type    |            exome/genome | Type of analysis: whole exome or whole genome  |
 | --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
+| --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference
 | --coverage   |            20 | Normal bams coverage |
 | --segmentation    |            2 | Number between 1 and 4 |
 
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
+| --suffix_tumor   |            "T" | specific suffix for tumor bam file name |
+| --suffix_normal   |            "N" | specific suffix for normal bam file name |
 | --facets_stats_out   |            facets_stats_summary.txt | Name of stats summary file |
 | --plot_file_out    |            png | Plot output in png or pdf |
 | --out_folder    |            facets_out | Folder name for output files (by default current folder)|
@@ -55,10 +59,11 @@ Flags are special parameters without value.
 | Name      | Description     |
 |-----------|-----------------|
 | --help    | Display help |
+| --output_pdf    |Program outputs a pdf |
 
 ## Usage
   ```
-  nextflow run facets.nf --tumor_bam_folder path/to/T_BAMS --tumor_bam_folder path/to/N_BAMS --analysis_type exome --ref hg38 --coverage 20 --segmentation 2 --out_folder path/to/output
+  nextflow run facets.nf --snppileup_path /path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type exome --ref hg38 --out_folder path/to/output
   ```
 
 ## Output
