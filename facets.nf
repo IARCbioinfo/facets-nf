@@ -17,7 +17,7 @@
 
 // requires: snp-pileup
 
-params.snppileup_dir = ##############FOLDER_TO_SNP_PILEUP
+params.snppileup_path = null
 
 params.help = null
 params.tumor_bam_folder = null
@@ -26,9 +26,13 @@ params.suffix_tumor = "_T"
 params.suffix_normal = "_N"
 params.analysis_type = null
 params.ref = null
-params.dbsnp_vcf_ref = ################# human_9606_b150_GRCh38p7.vcf.gz
+params.dbsnp_vcf_ref = null
+params.min_map_quality = 15
+params.min_base_quality = 20
+params.pseudo_snps =100
 params.coverage = null
 params.segmentation = null
+params.output_pdf = false
 params.facets_stats_out = 'facets_stats_summary.txt'
 params.plot_file_out = 'png'
 params.output_folder = .
@@ -56,29 +60,38 @@ if (params.help) {
     log.info ""
     log.info "Mandatory arguments:"
     log.info "
+    log.info "--snppileup_path	     PATH		 Path to snppileup software
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
     log.info "--analysis_type        STRING              Type of analysis: exome or genome"
-    log.info "--ref                  STRING              Version of genome: hg19 or hg38"
+    log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
+    log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file
+
+    log.info "Optional arguments:"
+    log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)
+    log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)
+    log.info "--min-map-quality
+    log.info "--min-base-quality 
+    log.info "--pseudo-snps
     log.info "--coverage             NUMBER              Normal bams coverage"   
     log.info "--segmentation         NUMBER              Segmentation: number between 1 and 4"
-    log.info ""
-    log.info "Optional arguments:"
     log.info "--facets_stats_out     FILE                Name of stats summary file
     log.info "--plot_file_out        FILE TYPE           Plot output in png or pdf"
     log.info "--out_folder           FOLDER              Folder name for output files
     log.info ""
     log.info "Flags:"
-    log.info "--<FLAG>                                                    <DESCRIPTION>"
+    log.info "--output_pdf           Program will generate a PDF output (takes longer)"
     log.info ""
     exit 0
 } 
 
 #Check the params
+assert (params.snppileup_path != true) && (params.snppileup_path != null) : "please specify --snppileup_path"
 assert (params.tumor_bam_folder != true) && (params.tumor_bam_folder != null) : "please specify --tumor_bam_folder"
 assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null) : "please specify --normal_bam_folder"
-assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type option (exome or genome)"
-assert (params.ref != true) && (params.ref != null) : "please specify --ref option (hg19 or hg38)"
+assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
+assert (params.ref != true) && (params.ref != null) : "please specify --ref (hg19 or hg38)"
+assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "please specify --dbsnp_vcf_ref (path to ref)"
 
 #Build pairs of bams with their corresponding bais
     try { assert file(params.tumor_bam_folder).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" } catch (AssertionError e) { println e.getMessage() }
@@ -125,6 +138,20 @@ assert (params.ref != true) && (params.ref != null) : "please specify --ref opti
 	// here each element X of tn_bambai channel is a 4-uplet. X[0] is the tumor bam, X[1] the tumor bai, X[2] the normal bam and X[3] the normal bai.
 
 
+  if (params.analysis_type == 'genome' ) {
+			snp_nbhd = 1000   
+			cval_preproc = 35
+			cval_proc1 = 300
+			cval_proc2 = 150
+			min_read_count = 20
+			}
+   if params.analysis_type == 'exome') {
+			snp_nbhd = 250   
+			cval_preproc = 25
+			cval_proc1 = 150
+			cval_proc2 = 75
+			min_read_count = 35
+			}
 process snppileup {
 # Input folder with pairs of bam => Output: pairX.csv.gz
 
@@ -137,9 +164,9 @@ process snppileup {
     set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") into snppileup4pair
 
     shell:
-    tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")
+    tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")  
     '''
-    !{params.snppileup_dir}/snp-pileup --gzip --min-map-quality 15 --min-base-quality 20 --pseudo-snps 100 --min-read-counts 20,0 ~/!{params.dbsnp_vcf_ref}  !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
+    !{params.snppileup_path}/snp-pileup --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !${min_read_count} !{params.dbsnp_vcf_ref}  !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
     '''
 }
 
@@ -155,14 +182,22 @@ process facets {
 
     output:
 	   file("${tumor_normal_tag}_stats.txt")
+	   file("${tumor_normal_tag}_CNV.txt")
+	   file("${tumor_normal_tag}_CNV.png") # or TO CHECK: file("${tumor_normal_tag}_CNV.pdf")
+	   file("${tumor_normal_tag}_CNV_spider.txt")
 	   stdout stats_summary
-       ##CNV.txt + CNV.png + CNV_Spider.pdf
 
     shell:
     tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")
-    '''
-    facets.r !${tumor_normal_tag}.csv.gz !{params.analysis_type} 10000 100 1000 300 20
-    '''
+	
+	if (params.output_pdf)
+    	'''
+   	 facets.r !${tumor_normal_tag}.csv.gz !{params.ref} !${snp_nbhd} !${cval_preproc} !${cval_proc1} !${cval_proc2} !${min_read_count}
+    	'''
+    	else
+    	'''
+    	facets.r !${tumor_normal_tag}.csv.gz !{params.ref} !${snp_nbhd} !${cval_preproc} !${cval_proc1} !${cval_proc2} !${min_read_count} PDF
+    	'''    
 }
 
-	stats_summary.collectFile(name: params.stats_out, storeDir: params.out_folder, seed: 'MyHeader')
+    stats_summary.collectFile(name: params.stats_out, storeDir: params.out_folder, seed: 'MyHeader')
