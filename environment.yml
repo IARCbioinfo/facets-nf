@@ -2,5 +2,7 @@ name: template-nf
 channels:
   - conda-forge
   - bioconda
+  - defaults
 dependencies:
-  - samtools=1.8
+  - r-facets
+  - r-data.table
