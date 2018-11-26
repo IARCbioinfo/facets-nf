@@ -66,7 +66,7 @@ Flags are special parameters without value.
 
 ## Usage
   ```
-  nextflow run facets.nf --snppileup_path /path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type exome --ref hg38 --out_folder path/to/output
+  nextflow run facets.nf --snppileup_path path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type genome --ref hg38 --dbsnp_vcf_ref path/to/dbSNP_vcf_ref --out_folder path/to/output
   ```
 
 ## Output
