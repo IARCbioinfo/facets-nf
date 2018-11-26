@@ -35,7 +35,7 @@ params.segmentation = null
 params.output_pdf = false
 params.facets_stats_out = 'facets_stats_summary.txt'
 params.plot_file_out = 'png'
-params.output_folder = .
+#params.output_folder = .
 
 
 log.info ""
