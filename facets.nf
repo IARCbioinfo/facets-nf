@@ -61,18 +61,18 @@ if (params.help) {
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
     log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
-    log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file
+    log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file"
 
     log.info "Optional arguments:"
     log.info "--analysis_type        STRING              Type of analysis: exome or genome"
-    log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)
-    log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)
-    log.info "--min-map-quality	     NUMBER		 
-    log.info "--min-base-quality     NUMBER
-    log.info "--pseudo-snps          NUMBER
-    log.info "--facets_stats_out     FILE                Name of stats summary file
+    log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)"
+    log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)"
+    log.info "--min-map-quality	     NUMBER		 "
+    log.info "--min-base-quality     NUMBER		 '
+    log.info "--pseudo-snps          NUMBER		 "
+    log.info "--facets_stats_out     FILE                Name of stats summary file"
     log.info "--plot_file_out        FILE TYPE           Plot output in png or pdf"
-    log.info "--out_folder           FOLDER              Folder name for output files
+    log.info "--out_folder           FOLDER              Folder name for output files"
     log.info ""
     log.info "Flags:"
     log.info "--output_pdf           Program will generate a PDF output (takes longer)"
