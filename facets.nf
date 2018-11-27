@@ -71,8 +71,6 @@ if (params.help) {
     log.info "--min-map-quality	     NUMBER		 
     log.info "--min-base-quality     NUMBER
     log.info "--pseudo-snps          NUMBER
-    log.info "--coverage             NUMBER              Normal bams coverage"   
-    log.info "--segmentation         NUMBER              Segmentation: number between 1 and 4"
     log.info "--facets_stats_out     FILE                Name of stats summary file
     log.info "--plot_file_out        FILE TYPE           Plot output in png or pdf"
     log.info "--out_folder           FOLDER              Folder name for output files
