@@ -140,7 +140,7 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 			params.cval_proc2 = 150
 			params.min_read_count = 20
 			}
-   if params.analysis_type == 'exome') {
+   if (params.analysis_type == 'exome') {
 			params.snp_nbhd = 250   
 			params.cval_preproc = 25
 			params.cval_proc1 = 150
