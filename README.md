@@ -37,15 +37,13 @@ You can avoid installing all the external software by only installing Docker. Se
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
 | --snppileup_path    |            tools/ | Path to snppileup software 
-| --analysis_type    |            exome/genome | Type of analysis: whole exome or whole genome  |
 | --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
 | --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference
-| --coverage   |            20 | Normal bams coverage |
-| --segmentation    |            2 | Number between 1 and 4 |
 
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
+| --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome  |
 | --suffix_tumor   |            "T" | specific suffix for tumor bam file name |
 | --suffix_normal   |            "N" | specific suffix for normal bam file name |
 | --min-map-quality   |            15 | 
