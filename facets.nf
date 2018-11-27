@@ -57,7 +57,7 @@ if (params.help) {
     log.info ""
     log.info "Mandatory arguments:"
     log.info ""
-    log.info "--snppileup_path	     PATH		 Path to snppileup software
+    log.info "--snppileup_path	     PATH		 Path to snppileup software"
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
     log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
@@ -68,7 +68,7 @@ if (params.help) {
     log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)"
     log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)"
     log.info "--min-map-quality	     NUMBER		 "
-    log.info "--min-base-quality     NUMBER		 '
+    log.info "--min-base-quality     NUMBER		 "
     log.info "--pseudo-snps          NUMBER		 "
     log.info "--facets_stats_out     FILE                Name of stats summary file"
     log.info "--plot_file_out        FILE TYPE           Plot output in png or pdf"
