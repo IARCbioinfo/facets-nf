@@ -56,7 +56,7 @@ if (params.help) {
     log.info "nextflow run iarcbioinfo/facets-nf [-with-docker] [OPTIONS]"
     log.info ""
     log.info "Mandatory arguments:"
-    log.info "
+    log.info ""
     log.info "--snppileup_path	     PATH		 Path to snppileup software
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
