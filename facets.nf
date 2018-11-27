@@ -24,14 +24,12 @@ params.tumor_bam_folder = null
 params.normal_bam_folder = null
 params.suffix_tumor = "_T"
 params.suffix_normal = "_N"
-params.analysis_type = null
+params.analysis_type = "genome"
 params.ref = null
 params.dbsnp_vcf_ref = null
 params.min_map_quality = 15
 params.min_base_quality = 20
 params.pseudo_snps =100
-params.coverage = null
-params.segmentation = null
 params.output_pdf = false
 params.facets_stats_out = 'facets_stats_summary.txt'
 params.plot_file_out = 'png'
@@ -63,11 +61,11 @@ if (params.help) {
     log.info "--snppileup_path	     PATH		 Path to snppileup software
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
-    log.info "--analysis_type        STRING              Type of analysis: exome or genome"
     log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file
 
     log.info "Optional arguments:"
+    log.info "--analysis_type        STRING              Type of analysis: exome or genome"
     log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)
     log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)
     log.info "--min-map-quality	     NUMBER		 
@@ -181,11 +179,16 @@ process facets {
     file("${tumor_normal_tag}.csv.gz from snppileup4pair
 
     output:
-	   file("${tumor_normal_tag}_stats.txt")
+	   file("${tumor_normal_tag}_stats.txt") into stats_summary
 	   file("${tumor_normal_tag}_CNV.txt")
-	   file("${tumor_normal_tag}_CNV.png") # or TO CHECK: file("${tumor_normal_tag}_CNV.pdf")
 	   file("${tumor_normal_tag}_CNV_spider.txt")
-	   stdout stats_summary
+	   if (params.output_pdf) {
+	   file("${tumor_normal_tag}_CNV.png")
+	   }
+	   else { 
+	   file("${tumor_normal_tag}_CNV.pdf")
+	   }
+
 
     shell:
     tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")
@@ -200,4 +203,4 @@ process facets {
     	'''    
 }
 
-    stats_summary.collectFile(name: params.stats_out, storeDir: params.out_folder, seed: 'MyHeader')
+    stats_summary.collectFile(name: params.stats_out, storeDir: params.out_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik')
