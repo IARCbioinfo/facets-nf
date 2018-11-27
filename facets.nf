@@ -173,7 +173,7 @@ process facets {
     publishDir params.out_folder+'/all_facets_stats/', mode: 'move'
     
     input:
-    file("${tumor_normal_tag}.csv.gz from snppileup4pair
+    file("${tumor_normal_tag}.csv.gz") from snppileup4pair
 
     output:
 	   file("${tumor_normal_tag}_stats.txt") into stats_summary
