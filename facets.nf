@@ -82,7 +82,7 @@ if (params.help) {
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
     log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
-    log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file"
+    log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
     log.info "Optional arguments:"
     log.info "--analysis_type        STRING              Type of analysis: exome or genome"
