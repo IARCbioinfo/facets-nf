@@ -86,7 +86,12 @@ if (params.help) {
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
     log.info "Optional arguments:"
-    log.info "--analysis_type        STRING              Type of analysis: exome or genome"
+    log.info "--analysis_type        STRING              Type of analysis: genome or exome"
+    log.info "--snp_nbhd	     NUMBER		 By default 1000 for genome, 250 for exome"
+    log.info "--cval_preproc	     NUMBER		 By default 35 for genome, 25 for exome"
+    log.info "--cval_proc1	     NUMBER		 By default 300 for genome, 150 for exome"
+    log.info "--cval_proc2	     NUMBER		 By default 150 for genome, 75 for exome"
+    log.info "--min_read_count	     NUMBER		 By default 20 for genome, 35 for exome"
     log.info "--suffix_tumor	     STRING		 tumor file name's specific suffix (by default _T)"
     log.info "--suffix_normal	     STRING		 normal file name's specific suffix (by default _N)"
     log.info "--min-map-quality	     NUMBER		 "
