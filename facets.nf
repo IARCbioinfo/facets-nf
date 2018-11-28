@@ -25,6 +25,26 @@ params.normal_bam_folder = null
 params.suffix_tumor = "_T"
 params.suffix_normal = "_N"
 params.analysis_type = "genome"
+params.snp_nbhd = null
+params.cval_preproc = null
+params.cval_proc1 = null
+params.cval_proc2 = null
+params.min_read_count = null
+if (params.analysis_type == 'genome' ) {
+			params.snp_nbhd = 1000   
+			params.cval_preproc = 35
+			params.cval_proc1 = 300
+			params.cval_proc2 = 150
+			params.min_read_count = 20
+			}
+if (params.analysis_type == 'exome') {
+			params.snp_nbhd = 250   
+			params.cval_preproc = 25
+			params.cval_proc1 = 150
+			params.cval_proc2 = 75
+			params.min_read_count = 35
+			}
+
 params.ref = null
 params.dbsnp_vcf_ref = null
 params.min_map_quality = 15
@@ -87,6 +107,11 @@ assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null) 
 assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
 assert (params.ref != true) && (params.ref != null) : "please specify --ref (hg19 or hg38)"
 assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "please specify --dbsnp_vcf_ref (path to ref)"
+assert (params.snp_nbhd != true) && (params.snp_nbhd != null) : "please specify --snp_nbhd"
+assert (params.cval_preproc != true) && (params.cval_preproc != null) : "please specify --cval_preproc"
+assert (params.cval_proc1 != true) && (params.cval_proc1 != null) : "please specify --cval_proc1"
+assert (params.cval_proc2 != true) && (params.cval_proc2 != null) : "please specify --cval_proc2"
+assert (params.min_read_count != true) && (params.min_read_count != null) : "please specify --min_read_count"
 
 //Build pairs of bams with their corresponding bais
     try { assert file(params.tumor_bam_folder).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" } catch (AssertionError e) { println e.getMessage() }
@@ -133,24 +158,10 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 	// here each element X of tn_bambai channel is a 4-uplet. X[0] is the tumor bam, X[1] the tumor bai, X[2] the normal bam and X[3] the normal bai.
 
 
-  if (params.analysis_type == 'genome' ) {
-			params.snp_nbhd = 1000   
-			params.cval_preproc = 35
-			params.cval_proc1 = 300
-			params.cval_proc2 = 150
-			params.min_read_count = 20
-			}
-   if (params.analysis_type == 'exome') {
-			params.snp_nbhd = 250   
-			params.cval_preproc = 25
-			params.cval_proc1 = 150
-			params.cval_proc2 = 75
-			params.min_read_count = 35
-			}
 process snppileup {
 // Input folder with pairs of bam => Output: pairX.csv.gz
 
-	tag { tumor_normal_tag }
+    tag { tumor_normal_tag }
     
     input:
     file tn from tn_bambai
@@ -168,15 +179,15 @@ process snppileup {
 process facets {
 // Input: pairX.csv.gz => Outputs: pairX_stats.txt (to aggregate into 1 file), CNV.txt, CNV.png (or pdf) , CNV_spider.pdf
 
-	tag { tumor_normal_tag }
+    tag { tumor_normal_tag }
     
     publishDir params.out_folder+'/all_facets_stats/', mode: 'move'
     
     input:
-    file("${tumor_normal_tag}.csv.gz") from snppileup4pair
+    set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") from snppileup4pair
 
     output:
-	   file("${tumor_normal_tag}_stats.txt") into stats_summary
+	   set val(tumor_normal_tag), file("${tumor_normal_tag}_stats.txt") into stats_summary
 	   file("${tumor_normal_tag}_CNV.txt")
 	   file("${tumor_normal_tag}_CNV_spider.txt")
 	   if (params.output_pdf) {
