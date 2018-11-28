@@ -24,6 +24,7 @@ params.tumor_bam_folder = null
 params.normal_bam_folder = null
 params.suffix_tumor = "_T"
 params.suffix_normal = "_N"
+params.tn_file = null
 params.analysis_type = "genome"
 params.snp_nbhd = null
 params.cval_preproc = null
@@ -113,6 +114,12 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 //assert (params.cval_proc2 != null) : "please specify --cval_proc2"
 //assert (params.min_read_count != null) : "please specify --min_read_count"
 
+
+if (params.tn_file) {
+    // FOR INPUT AS A TAB DELIMITED FILE
+    tn_bambai = Channel.fromPath(params.tn_file).splitCsv(header: true, sep: '\t', strip: true).map{row -> [ file(params.bam_folder + "/" + row.tumor), file(params.bam_folder + "/" + row.tumor+'.bai') ,file(params.bam_folder + "/" + row.normal), file(params.bam_folder + "/" + row.normal+'.bai') ]}
+} else {
+
 //Build pairs of bams with their corresponding bais
     try { assert file(params.tumor_bam_folder).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" } catch (AssertionError e) { println e.getMessage() }
 	assert file(params.tumor_bam_folder).listFiles().findAll { it.name ==~ /.*bam/ }.size() > 0 : "tumor BAM folder contains no BAM"
@@ -156,7 +163,7 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 		.phase(normal_bam_bai)
 		.map {tumor_bb, normal_bb -> [ tumor_bb[1], tumor_bb[2], normal_bb[1], normal_bb[2] ] }    
 	// here each element X of tn_bambai channel is a 4-uplet. X[0] is the tumor bam, X[1] the tumor bai, X[2] the normal bam and X[3] the normal bai.
-
+}
 
 process snppileup {
 // Input folder with pairs of bam => Output: pairX.csv.gz
@@ -199,7 +206,6 @@ process facets {
 
 
     shell:
-    tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")
 	
 	if (params.output_pdf)
     	'''
