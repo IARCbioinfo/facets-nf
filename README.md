@@ -22,14 +22,14 @@
 You can avoid installing all the external software by only installing Docker. See the [IARC-nf](https://github.com/IARCbioinfo/IARC-nf) repository for more information.
 
 
-## Input
+## Input (mandatory)
   | Type      | Description     |
   |-----------|---------------|
   | --tumor_bam_folder    | Folder containing tumor BAM files |
   | --normal_bam_folder    | Folder containing normal BAM files|
-  
+  OR
+  | --tn_file    | File containing the list of pairs T/N to be processed (tab-delimited as follow: T.bam, T.bai, N.bam, N.bai) |  
 
-  Specify the test files location
 
 ## Parameters
 
@@ -43,7 +43,12 @@ You can avoid installing all the external software by only installing Docker. Se
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
-| --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome  |
+| --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome - sets next five parameters values  |
+| --snp_nbhd   |            1000 or 250 | 1st value for genome, 2nd value for exome analysis |
+| --cval_preproc   |            35 por 25 | 1st value for genome, 2nd value for exome analysis |
+| --cval_proc1   |            300 or 150 | 1st value for genome, 2nd value for exome analysis |
+| --cval_proc2   |            150 or 75 | 1st value for genome, 2nd value for exome analysis |
+| --min_read_count   |            20 or 35 | 1st value for genome, 2nd value for exome analysis |
 | --suffix_tumor   |            "T" | specific suffix for tumor bam file name |
 | --suffix_normal   |            "N" | specific suffix for normal bam file name |
 | --min-map-quality   |            15 | 
@@ -60,23 +65,21 @@ Flags are special parameters without value.
 | Name      | Description     |
 |-----------|-----------------|
 | --help    | Display help |
-| --output_pdf    |Program outputs a pdf |
+| --output_pdf    |Program outputs a pdf (Takes longer) |
 
 ## Usage
   ```
-  nextflow run facets.nf --snppileup_path path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type genome --ref hg38 --dbsnp_vcf_ref path/to/dbSNP_vcf_ref --out_folder path/to/output
+  nextflow run iarcbioinfo/facets.nf --snppileup_path path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type genome --ref hg38 --dbsnp_vcf_ref path/to/dbSNP_vcf_ref --out_folder path/to/output
   ```
 
 ## Output
   | Type      | Description     |
   |-----------|---------------|
-  | output1    | ...... |
-  | output2    | ...... |
-
-
-## Detailed description (optional section)
-...
-
+  | All_stats.txt    | Stats for all samples pooled |
+  | Sample_CNV.txt    | ...... |
+  | Sample_CNV_spider.txt    | ...... |
+  | Sample_CNV.png or Sample_CNV.pdf    | ...... |
+  
 ## Directed Acyclic Graph
 [![DAG](dag.png)](http://htmlpreview.github.io/?https://github.com/IARCbioinfo/template-nf/blob/master/dag.html)
 
@@ -84,11 +87,6 @@ Flags are special parameters without value.
 
   | Name      | Email | Description     |
   |-----------|---------------|-----------------|
-  | contrib1*    |            xx | Developer to contact for support (link to specific gitter chatroom) |
-  | contrib2    |            xx | Developer |
-  | contrib3    |            xx | Tester |
-
-## References (optional)
-
-## FAQ (optional)
+  | Matthieu Foll*    |            follm@iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
+  | Catherine Voegele    |            voegelec@iarc.fr | Developer |
 
