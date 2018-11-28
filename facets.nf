@@ -107,11 +107,11 @@ assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null) 
 assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
 assert (params.ref != true) && (params.ref != null) : "please specify --ref (hg19 or hg38)"
 assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "please specify --dbsnp_vcf_ref (path to ref)"
-assert (params.snp_nbhd != true) && (params.snp_nbhd != null) : "please specify --snp_nbhd"
-assert (params.cval_preproc != true) && (params.cval_preproc != null) : "please specify --cval_preproc"
-assert (params.cval_proc1 != true) && (params.cval_proc1 != null) : "please specify --cval_proc1"
-assert (params.cval_proc2 != true) && (params.cval_proc2 != null) : "please specify --cval_proc2"
-assert (params.min_read_count != true) && (params.min_read_count != null) : "please specify --min_read_count"
+assert (params.snp_nbhd != null) : "please specify --snp_nbhd"
+assert (params.cval_preproc != null) : "please specify --cval_preproc"
+assert (params.cval_proc1 != null) : "please specify --cval_proc1"
+assert (params.cval_proc2 != null) : "please specify --cval_proc2"
+assert (params.min_read_count != null) : "please specify --min_read_count"
 
 //Build pairs of bams with their corresponding bais
     try { assert file(params.tumor_bam_folder).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" } catch (AssertionError e) { println e.getMessage() }
