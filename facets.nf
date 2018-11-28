@@ -168,8 +168,6 @@ if (params.tn_file) {
 process snppileup {
 // Input folder with pairs of bam => Output: pairX.csv.gz
 
-    tag { tumor_normal_tag }
-    
     input:
     file tn from tn_bambai
 
