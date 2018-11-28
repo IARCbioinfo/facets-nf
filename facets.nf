@@ -79,8 +79,9 @@ if (params.help) {
     log.info "Mandatory arguments:"
     log.info ""
     log.info "--snppileup_path	     PATH		 Path to snppileup software"
-    log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files"
-    log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files"    
+    log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files OR --tn_file" 
+    log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files OR --tn_file"    
+    log.info "--tn_file		     FILE		 File containing list of T/N bam files to be processed (T.bam, T.bai, N.bam, N.bai)"
     log.info "--ref                  STRING              Version of genome: hg19 or hg38 or hg18 or mm9 or mm10"
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
