@@ -187,7 +187,7 @@ process facets {
     set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") from snppileup4pair
 
     output:
-	   set val(tumor_normal_tag), file("${tumor_normal_tag}_stats.txt") into stats_summary
+	   file("${tumor_normal_tag}_stats.txt") into stats_summary
 	   file("${tumor_normal_tag}_CNV.txt")
 	   file("${tumor_normal_tag}_CNV_spider.txt")
 	   if (params.output_pdf) {
