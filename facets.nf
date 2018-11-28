@@ -177,7 +177,7 @@ process snppileup {
     shell:
     tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")  
     '''
-    !{params.snppileup_path}/snp-pileup --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !${min_read_count} !{params.dbsnp_vcf_ref}  !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
+    !{params.snppileup_path}/snp-pileup --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !${min_read_count} !{params.dbsnp_vcf_ref} !${tumor_normal_tag}.csv.gz !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
     '''
 }
 
