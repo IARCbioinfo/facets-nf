@@ -199,7 +199,7 @@ process facets {
 	   file("${tumor_normal_tag}_CNV.png")
 //	   }
 //	   else { 
-//	   file("${tumor_normal_tag}_CNV.pdf")
+	   file("${tumor_normal_tag}_CNV.pdf")
 //	   }
 
 
