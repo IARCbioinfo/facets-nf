@@ -198,14 +198,14 @@ process facets {
     set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") from snppileup4pair
 
     output:
-	   file("${tumor_normal_tag}_stats.txt") into stats_summary
-	   file("${tumor_normal_tag}_CNV.txt")
-	   file("${tumor_normal_tag}_CNV_spider.txt")
+	   file("${tumor_normal_tag}.csv.gz_stats.txt") into stats_summary
+	   file("${tumor_normal_tag}.csv.gz_CNV.txt")
+	   file("${tumor_normal_tag}.csv.gz_CNV_spider.txt")
 //	   if (params.output_pdf) {
-	   file("${tumor_normal_tag}_CNV.png")
+	   file("${tumor_normal_tag}.csv.gz_CNV.png")
 //	   }
 //	   else { 
-//	   file("${tumor_normal_tag}_CNV.pdf")
+//	   file("${tumor_normal_tag}.csv.gz_CNV.pdf")
 //	   }
 
 
