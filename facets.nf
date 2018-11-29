@@ -192,7 +192,7 @@ process facets {
 
     tag { tumor_normal_tag }
     
-    publishDir params.out_folder+'/all_facets_stats/', mode: 'move'
+    publishDir params.out_folder+'/all_facets_stats/', mode: 'copy'
     
     input:
     set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") from snppileup4pair
