@@ -45,15 +45,12 @@ if (params.analysis_type == 'exome') {
 			cval_proc2 = 75
 			min_read_count = 35
 			}
-
 params.ref = null
 params.dbsnp_vcf_ref = null
 params.min_map_quality = 15
 params.min_base_quality = 20
 params.pseudo_snps =100
 params.output_pdf = false
-params.facets_stats_out = 'facets_stats_summary.txt'
-params.plot_file_out = 'png'
 params.output_folder = 'out_facets'
 
 log.info ""
@@ -97,9 +94,7 @@ if (params.help) {
     log.info "--min-map-quality	     NUMBER		 "
     log.info "--min-base-quality     NUMBER		 "
     log.info "--pseudo-snps          NUMBER		 "
-    log.info "--facets_stats_out     FILE                Name of stats summary file"
-    log.info "--plot_file_out        FILE TYPE           Plot output in png or pdf"
-    log.info "--out_folder           FOLDER              Folder name for output files"
+    log.info "--out_folder           FOLDER              Folder name for output files (by default: out_facets)"
     log.info ""
     log.info "Flags:"
     log.info "--output_pdf           Program will generate a PDF output (takes longer)"
@@ -114,12 +109,7 @@ assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null) 
 assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
 assert (params.ref != true) && (params.ref != null) : "please specify --ref (hg19 or hg38)"
 assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "please specify --dbsnp_vcf_ref (path to ref)"
-//assert (params.snp_nbhd != null) : "please specify --snp_nbhd"
-//assert (params.cval_preproc != null) : "please specify --cval_preproc"
-//assert (params.cval_proc1 != null) : "please specify --cval_proc1"
-//assert (params.cval_proc2 != null) : "please specify --cval_proc2"
-//assert (params.min_read_count != null) : "please specify --min_read_count"
-
+//check that snp_nbhd, cval_preproc, cval_proc1, cval_proc2, min_read_count are not null
 
 if (params.tn_file) {
     // FOR INPUT AS A TAB DELIMITED FILE
