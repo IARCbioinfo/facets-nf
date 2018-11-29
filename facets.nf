@@ -201,13 +201,8 @@ process facets {
 	   file("${tumor_normal_tag}.csv.gz_stats.txt") into stats_summary
 	   file("${tumor_normal_tag}.csv.gz_CNV.txt")
 	   file("${tumor_normal_tag}.csv.gz_CNV_spider.pdf")
-//	   if (params.output_pdf) {
-	   file("${tumor_normal_tag}.csv.gz_CNV.png")
-//	   }
-//	   else { 
-//	   file("${tumor_normal_tag}.csv.gz_CNV.pdf")
-//	   }
-
+	   file("${tumor_normal_tag}.csv.gz_CNV.png") optional true
+	   file("${tumor_normal_tag}.csv.gz_CNV.pdf") optional true
 
     shell:
 	
