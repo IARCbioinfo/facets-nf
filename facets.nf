@@ -200,7 +200,7 @@ process facets {
     output:
 	   file("${tumor_normal_tag}.csv.gz_stats.txt") into stats_summary
 	   file("${tumor_normal_tag}.csv.gz_CNV.txt")
-	   file("${tumor_normal_tag}.csv.gz_CNV_spider.txt")
+	   file("${tumor_normal_tag}.csv.gz_CNV_spider.pdf")
 //	   if (params.output_pdf) {
 	   file("${tumor_normal_tag}.csv.gz_CNV.png")
 //	   }
