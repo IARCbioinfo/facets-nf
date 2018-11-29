@@ -213,11 +213,11 @@ process facets {
 	
 	if (params.output_pdf)
     	'''
-   	 facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count}
+   	Rscript $baseDir/bin/facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count}
     	'''
     	else
     	'''
-    	facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count}
+    	Rscript $baseDir/bin/facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count}
     	'''    
 }
 
