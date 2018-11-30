@@ -206,4 +206,4 @@ process facets {
     	'''    
 }
 
-    stats_summary.collectFile(name: 'All_stats.txt', storeDir: params.out_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik')
+    stats_summary.collectFile(name: 'All_stats.txt', storeDir: params.out_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', skip: 1)
