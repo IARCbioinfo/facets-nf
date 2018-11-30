@@ -36,13 +36,13 @@ You can avoid installing all the external software by only installing Docker. Se
   * #### Mandatory
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
-| --snppileup_path    |            tools/ | Path to snppileup software 
 | --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
 | --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference
 
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
+| --snppileup_path    |            snp-pileup | Path to snppileup software 
 | --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome - sets next five parameters values  |
 | --snp_nbhd   |            1000 or 250 | 1st value for genome, 2nd value for exome analysis |
 | --cval_preproc   |            35 por 25 | 1st value for genome, 2nd value for exome analysis |
@@ -69,7 +69,7 @@ Flags are special parameters without value.
 
 ## Usage
   ```
-  nextflow run iarcbioinfo/facets.nf --snppileup_path path/to/snppileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type genome --ref hg38 --dbsnp_vcf_ref path/to/dbSNP_vcf_ref --out_folder path/to/output
+  nextflow run iarcbioinfo/facets.nf --snppileup_path path/to/snp-pileup --tumor_bam_folder path/to/T_BAMS --normal_bam_folder path/to/N_BAMS --analysis_type genome --ref hg38 --dbsnp_vcf_ref path/to/dbSNP_vcf_ref --out_folder path/to/output
   ```
 
 ## Output
