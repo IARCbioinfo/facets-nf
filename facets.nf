@@ -75,7 +75,6 @@ if (params.help) {
     log.info ""
     log.info "Mandatory arguments:"
     log.info ""
-    log.info "--snppileup_path	     PATH		 Path to snppileup software (by default snp-pileup)" 
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files OR --tn_file" 
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files OR --tn_file"    
     log.info "--tn_file		     FILE		 File containing list of T/N bam files to be processed (T.bam, T.bai, N.bam, N.bai)"
@@ -83,6 +82,7 @@ if (params.help) {
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
     log.info "Optional arguments:"
+    log.info "--snppileup_path	     PATH		 Path to snppileup software (by default snp-pileup)" 
     log.info "--analysis_type        STRING              Type of analysis: genome or exome"
     log.info "--snp_nbhd	     NUMBER		 By default 1000 for genome, 250 for exome"
     log.info "--cval_preproc	     NUMBER		 By default 35 for genome, 25 for exome"
