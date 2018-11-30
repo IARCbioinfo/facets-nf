@@ -17,7 +17,7 @@
 
 // requires: snp-pileup
 
-params.snppileup_path = snp-pileup
+params.snppileup_path = "snp-pileup"
 
 params.help = null
 params.tumor_bam_folder = null
