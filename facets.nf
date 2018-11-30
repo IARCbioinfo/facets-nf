@@ -17,7 +17,7 @@
 
 // requires: snp-pileup
 
-params.snppileup_path = null
+params.snppileup_path = snp-pileup
 
 params.help = null
 params.tumor_bam_folder = null
@@ -75,7 +75,7 @@ if (params.help) {
     log.info ""
     log.info "Mandatory arguments:"
     log.info ""
-    log.info "--snppileup_path	     PATH		 Path to snppileup software"
+    log.info "--snppileup_path	     PATH		 Path to snppileup software (by default snp-pileup)" 
     log.info "--tumor_bam_folder     FOLDER              Folder containing tumor bam files OR --tn_file" 
     log.info "--normal_bam_folder    FOLDER              Folder containing tumor bam files OR --tn_file"    
     log.info "--tn_file		     FILE		 File containing list of T/N bam files to be processed (T.bam, T.bai, N.bam, N.bai)"
@@ -173,7 +173,7 @@ process snppileup {
     shell:
     tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")  
     '''
-    !{params.snppileup_path}/snp-pileup --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !{min_read_count} !{params.dbsnp_vcf_ref} !{tumor_normal_tag}.csv.gz !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
+    !{params.snppileup_path} --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !{min_read_count} !{params.dbsnp_vcf_ref} !{tumor_normal_tag}.csv.gz !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
     '''
 }
 
