@@ -103,7 +103,6 @@ if (params.help) {
 } 
 
 //Check the params
-assert (params.snppileup_path != true) && (params.snppileup_path != null) : "please specify --snppileup_path"
 assert (params.tumor_bam_folder != true) && (params.tumor_bam_folder != null) : "please specify --tumor_bam_folder"
 assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null) : "please specify --normal_bam_folder"
 assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
