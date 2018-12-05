@@ -37,7 +37,11 @@ You can avoid installing all the external software by only installing Docker. Se
 | Name      | Example value | Description     |
 |-----------|---------------|-----------------|
 | --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
-| --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference
+| --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference |
+
+Dbsno vcf reference can be downloaded for:
+- hg19: [here](ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh37p13/VCF/00-common_all.vcf.gz) 
+- hg38: [here](ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/00-common_all.vcf.gz)
 
   * #### Optional
 | Name      | Default value | Description     |
@@ -55,7 +59,6 @@ You can avoid installing all the external software by only installing Docker. Se
 | --min-base-quality    |            20 | 
 | --pseudo-snps   |            100 | 
 | --facets_stats_out   |            facets_stats_summary.txt | Name of stats summary file |
-| --plot_file_out    |            png | Plot output in png or pdf |
 | --out_folder    |            facets_out | Folder name for output files (by default current folder)|
 
   * #### Flags
