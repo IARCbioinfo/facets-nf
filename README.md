@@ -39,7 +39,7 @@ You can avoid installing all the external software by only installing Docker. Se
 | --ref    |            hg19/hg38 | Version of genome: hg19 or hg38 |
 | --dbsnp_vcf_ref    |            ref/dbsnp_vcf_ref | Path to dbsnp vcf reference |
 
-Dbsno vcf reference can be downloaded for:
+Dbsnp vcf reference can be downloaded for:
 - hg19: at ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh37p13/VCF/00-common_all.vcf.gz 
 - hg38: at ftp://ftp.ncbi.nlm.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/00-common_all.vcf.gz
 
