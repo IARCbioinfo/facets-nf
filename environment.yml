@@ -1,4 +1,4 @@
-name: template-nf
+name: facets-nf
 channels:
   - conda-forge
   - bioconda
