@@ -8,7 +8,7 @@ jobs:
         - run: wget -qO- get.nextflow.io | bash ; chmod 755 nextflow ; sudo ln -s ~/project/nextflow /usr/local/bin/ ; sudo apt-get install graphviz
         - run: cd ~ && git clone --depth=1 https://github.com/IARCbioinfo/data_test.git
         - run: echo " docker.runOptions = '-u $(id -u):$(id -g)' " > ~/.nextflow/config
-        - run: cd ~/project/ ; docker build -t iarcbioinfo/facets-nf .
+        - run: cd ~/project/facets.nf ; docker build -t iarcbioinfo/facets-nf .
         - run: cd ; nextflow run ~/project/facets.nf -with-docker iarcbioinfo/facets-nf --help
         - run: cd ; mv ~/nf-pipeline_info/facets_dag.html ~/project/
         - deploy:
