@@ -10,7 +10,7 @@ jobs:
         - run: echo " docker.runOptions = '-u $(id -u):$(id -g)' " > ~/.nextflow/config
         - run: cd ~/project ; docker build -t iarcbioinfo/facets-nf .
         - run: cd ; nextflow run ~/project/facets.nf -with-docker iarcbioinfo/facets-nf --help
-        - run: cd ; mv ~/nf-pipeline_info/facets_dag.html ~/project/
+#        - run: cd ; mv ~/nf-pipeline_info/facets_dag.html ~/project/
         - deploy:
             branch: [dev, master]
             command: chmod +x deploy.sh && ./deploy.sh
