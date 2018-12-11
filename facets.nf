@@ -51,7 +51,7 @@ params.min_map_quality = 15
 params.min_base_quality = 20
 params.pseudo_snps =100
 params.output_pdf = false
-params.output_folder = .
+params.output_folder = "."
 
 log.info ""
 log.info "--------------------------------------------------------"
