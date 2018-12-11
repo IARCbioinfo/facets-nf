@@ -1,5 +1,5 @@
 #!/bin/bash
-cd ~/project/
+cd ~/facets-nf/
 commitID=`git log -n 1 --pretty="%h" -- environment.yml`
 sed -i '/^# environment.yml/d' Singularity && echo -e "\n# environment.yml commit ID: $commitID\n" >> Singularity
 git config --global user.email "voegelec@iarc.fr"
