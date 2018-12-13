@@ -4,5 +4,6 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - r-base
   - r-facets
   - r-data.table

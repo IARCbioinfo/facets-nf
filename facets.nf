@@ -1,5 +1,7 @@
 #! /usr/bin/env nextflow
 
+//vim: syntax=groovy -*- mode: groovy;-*-
+
 // Copyright (C) 2017 IARC/WHO
 
 // This program is free software: you can redistribute it and/or modify
@@ -15,9 +17,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// requires: snp-pileup
-
-params.snppileup_path = "snp-pileup"
+params.snppileup_bin = "snp-pileup"
 
 params.help = null
 params.tumor_bam_folder = null
@@ -55,7 +55,7 @@ params.output_folder = "."
 
 log.info ""
 log.info "--------------------------------------------------------"
-log.info "  <PROGRAM_NAME> <VERSION>: <SHORT DESCRIPTION>         "
+log.info "  FACETS-nf: Somatic Copy Number Varaint calling        "
 log.info "--------------------------------------------------------"
 log.info "Copyright (C) IARC/WHO"
 log.info "This program comes with ABSOLUTELY NO WARRANTY; for details see LICENSE"
@@ -82,7 +82,7 @@ if (params.help) {
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
     log.info "Optional arguments:"
-    log.info "--snppileup_path	     PATH		 Path to snppileup software (by default snp-pileup)" 
+    log.info "--snppileup__bin	     PATH		 Path to snppileup software (default: snp-pileup)" 
     log.info "--analysis_type        STRING              Type of analysis: genome or exome"
     log.info "--snp_nbhd	     NUMBER		 By default 1000 for genome, 250 for exome"
     log.info "--cval_preproc	     NUMBER		 By default 35 for genome, 25 for exome"
@@ -94,7 +94,7 @@ if (params.help) {
     log.info "--min-map-quality	     NUMBER		 "
     log.info "--min-base-quality     NUMBER		 "
     log.info "--pseudo-snps          NUMBER		 "
-    log.info "--out_folder           FOLDER              Folder name for output files (by default: out_facets)"
+    log.info "--output_folder        FOLDER              Folder name for output files (default: .)"
     log.info ""
     log.info "Flags:"
     log.info "--output_pdf           Program will generate a PDF output (takes longer)"
@@ -172,7 +172,7 @@ process snppileup {
     shell:
     tumor_normal_tag = tn[0].baseName.replace(params.suffix_tumor,"")  
     '''
-    !{params.snppileup_path} --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !{min_read_count} !{params.dbsnp_vcf_ref} !{tumor_normal_tag}.csv.gz !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
+    !{params.snppileup_bin} --gzip --min-map-quality !{params.min_map_quality} --min-base-quality !{params.min_base_quality} --pseudo-snps !{params.pseudo_snps} --min-read-counts !{min_read_count} !{params.dbsnp_vcf_ref} !{tumor_normal_tag}.csv.gz !{tumor_normal_tag}!{params.suffix_normal}.bam !{tumor_normal_tag}!{params.suffix_tumor}.bam
     '''
 }
 
@@ -181,7 +181,7 @@ process facets {
 
     tag { tumor_normal_tag }
     
-    publishDir params.out_folder+'/all_facets_stats/', mode: 'copy'
+    publishDir params.output_folder+'/all_facets_stats/', mode: 'copy'
     
     input:
     set val(tumor_normal_tag), file("${tumor_normal_tag}.csv.gz") from snppileup4pair
@@ -197,12 +197,12 @@ process facets {
 	
 	if (params.output_pdf)
     	'''
-   	Rscript !{baseDir}/bin/facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count} PDF
+   		Rscript !{baseDir}/bin/facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count} PDF
     	'''
-    	else
+    else
     	'''
     	Rscript !{baseDir}/bin/facets.r !{tumor_normal_tag}.csv.gz !{params.ref} !{snp_nbhd} !{cval_preproc} !{cval_proc1} !{cval_proc2} !{min_read_count}
     	'''    
 }
 
-    stats_summary.collectFile(name: 'All_stats.txt', storeDir: params.out_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
+    stats_summary.collectFile(name: 'facets_summary_stats.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
