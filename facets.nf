@@ -82,7 +82,7 @@ if (params.help) {
     log.info "--dbsnp_vcf_ref	     PATH		 Path to dbsnp vcf reference file (with name of ref file)"
 
     log.info "Optional arguments:"
-    log.info "--snppileup__bin	     PATH		 Path to snppileup software (default: snp-pileup)" 
+    log.info "--snppileup_bin	     PATH		 Path to snppileup software (default: snp-pileup)" 
     log.info "--analysis_type        STRING              Type of analysis: genome or exome"
     log.info "--snp_nbhd	     NUMBER		 By default 1000 for genome, 250 for exome"
     log.info "--cval_preproc	     NUMBER		 By default 35 for genome, 25 for exome"
