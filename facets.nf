@@ -162,6 +162,33 @@ if (params.tn_file) {
 	// here each element X of tn_bambai channel is a 4-uplet. X[0] is the tumor bam, X[1] the tumor bai, X[2] the normal bam and X[3] the normal bai.
 }
 
+/* Display parameters information */
+log.info ""
+log.info "PARAMETERS"
+log.info "----------"
+log.info "Tumor bams folder           	= ${params.tumor_bam_folder}"
+log.info "Normal bams folder     	= ${params.normal_bam_folder}"
+log.info "All bams folder  		= ${params.bam_folder}"
+log.info "Tn pairs file       		= ${params.tn_file}"
+log.info "Tumor suffix           	= ${params.suffix_tumor}"
+log.info "Normal suffix           	= ${params.suffix_normal}"
+log.info "Analysis Type 		= ${params.analysis_type}"
+log.info "SNP nbhd          		= ${params.snp_nbhd}"
+log.info "Cval preproc.  		= ${params.cval_preproc}"
+log.info "Cval proc 1         		= ${params.cval_proc1}"
+log.info "Cval proc 2           	= ${params.cval_proc2}"
+log.info "Min read count           	= ${params.min_read_count}"
+log.info "Ref           		= ${params.ref}"
+log.info "Cval proc 2           	= ${params.dbsnp_vcf_ref}"
+log.info "Min map quality	       	= ${params.min_map_quality}"
+log.info "Min base quality           	= ${params.min_base_quality}"
+log.info "Pseudo snps   	       	= ${params.pseudo_snps}"
+log.info "Output pdf     	     	= ${params.output_pdf}"
+log.info "Output folder           	= ${params.output_folder}"
+log.info ""
+
+
+
 process snppileup {
 // Input folder with pairs of bam => Output: pairX.csv.gz
 
