@@ -105,8 +105,8 @@ if (params.help) {
 } 
 
 //Check the params
-assert (params.tumor_bam_folder != true) && (params.tumor_bam_folder != null)  && (params.bam_folder != null) : "please specify --tumor_bam_folder"
-assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null)  && (params.bam_folder != null) : "please specify --normal_bam_folder"
+//assert (params.tumor_bam_folder != true) && (params.tumor_bam_folder != null)  : "please specify --tumor_bam_folder"
+//assert (params.normal_bam_folder != true) && (params.normal_bam_folder != null)  : "please specify --normal_bam_folder"
 assert (params.analysis_type != true) && (params.analysis_type != null) : "please specify --analysis_type (exome or genome)"
 assert (params.ref != true) && (params.ref != null) : "please specify --ref (hg19 or hg38)"
 assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "please specify --dbsnp_vcf_ref (path to ref)"
