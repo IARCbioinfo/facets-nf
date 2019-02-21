@@ -32,14 +32,14 @@ params.cval_preproc = null
 params.cval_proc1 = null
 params.cval_proc2 = null
 params.min_read_count = null
-if (params.analysis_type == 'genome' ) {
+if (params.analysis_type == "genome" ) {
 			snp_nbhd = 1000   
 			cval_preproc = 35
 			cval_proc1 = 300
 			cval_proc2 = 150
 			min_read_count = 20
 			}
-if (params.analysis_type == 'exome') {
+if (params.analysis_type == "exome") {
 			snp_nbhd = 250   
 			cval_preproc = 25
 			cval_proc1 = 150
