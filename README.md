@@ -28,6 +28,7 @@ You can avoid installing all the external software by only installing Docker. Se
   | --tumor_bam_folder    | Folder containing tumor BAM files |
   | --normal_bam_folder    | Folder containing normal BAM files|
   OR
+  | --bam_folder    | Folder containing all BAM files|  
   | --tn_file    | File containing the list of pairs T/N to be processed (tab-delimited as follow: T.bam, T.bai, N.bam, N.bai) |  
 
 
