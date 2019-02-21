@@ -29,7 +29,7 @@ You can avoid installing all the external software by only installing Docker. Se
   | --normal_bam_folder    | Folder containing normal BAM files|
   OR
   | --bam_folder    | Folder containing all BAM files|  
-  | --tn_file    | File containing the list of pairs T/N to be processed (tab-delimited as follow: T.bam, T.bai, N.bam, N.bai) |  
+  | --tn_file    | File containing the list of pairs T/N to be processed (tab-delimited as follow: T.bam, N.bam) |  
 
 
 ## Parameters
