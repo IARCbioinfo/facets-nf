@@ -27,11 +27,11 @@ params.suffix_normal = "_N"
 params.bam_folder = null
 params.tn_file = null
 params.analysis_type = null
-params.snp_nbhd = 250
-params.cval_preproc = 25
-params.cval_proc1 = 150
-params.cval_proc2 = 75
-params.min_read_count = 35
+params.snp_nbhd = null
+params.cval_preproc = null
+params.cval_proc1 = null
+params.cval_proc2 = null
+params.min_read_count = null
 if (params.analysis_type == "genome" ) {
 			snp_nbhd = 1000   
 			cval_preproc = 35
