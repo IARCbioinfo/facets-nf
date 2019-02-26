@@ -114,7 +114,9 @@ assert (params.dbsnp_vcf_ref != true) && (params.dbsnp_vcf_ref != null) : "pleas
 
 if (params.tn_file) {
     // FOR INPUT AS A TAB DELIMITED FILE
-    tn_bambai = Channel.fromPath(params.tn_file).splitCsv(header: true, sep: '\t', strip: true).map{row -> [ file(params.bam_folder + "/" + row.tumor), file(params.bam_folder + "/" + row.tumor+'.bai') ,file(params.bam_folder + "/" + row.normal), file(params.bam_folder + "/" + row.normal+'.bai') ]}
+    // tn_bambai = Channel.fromPath(params.tn_file).splitCsv(header: true, sep: '\t', strip: true).map{row -> [ file(params.bam_folder + "/" + row.tumor), file(params.bam_folder + "/" + row.tumor+'.bai') ,file(params.bam_folder + "/" + row.normal), file(params.bam_folder + "/" + row.normal+'.bai') ]}
+
+    tn_bambai = Channel.fromPath(params.tn_file).splitCsv(header: true, sep: '\t').map{row -> [ file(params.bam_folder + "/" + row.tumor), file(params.bam_folder + "/" + row.tumor+'.bai') ,file(params.bam_folder + "/" + row.normal), file(params.bam_folder + "/" + row.normal+'.bai') ]}
 } else {
 
 //Build pairs of bams with their corresponding bais
