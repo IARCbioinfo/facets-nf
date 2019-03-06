@@ -25,11 +25,11 @@ You can avoid installing all the external software by only installing Docker. Se
 ## Input (mandatory)
   | Type      | Description     |
   |-----------|---------------|
-  | --tumor_bam_folder    | Folder containing tumor BAM files |
+  | --tumor_bam_folder    | Folder containing tumor BAM files  |
   | --normal_bam_folder    | Folder containing normal BAM files|
   OR
-  | --bam_folder    | Folder containing all BAM files|  
-  | --tn_file    | File containing the list of pairs T/N to be processed (tab-delimited as follow: T.bam, N.bam) |  
+  | --bam_folder    | Folder containing all BAM files (without "/" at the end)|  
+  | --tn_file    | File containing the list of names of BAM files to be processed - by pairs T/N (tab-delimited as follow: T.bam, N.bam) |  
 
 
 ## Parameters
@@ -83,6 +83,14 @@ Flags are special parameters without value.
   | Sample_CNV.txt    | ...... |
   | Sample_CNV_spider.txt    | ...... |
   | Sample_CNV.png or Sample_CNV.pdf    | ...... |
+  
+## Common errors
+In case of low coverage you may get the following error during facets process:
+Loading required package: pctGCdata
+Error in fit.cpt.tree(genomdat, cval = cval, hscl = hscl, delta = delta) :
+NA/NaN/Inf in foreign function call (arg 9)
+Calls: preProcSample -> segsnps -> fit.cpt.tree
+=> We advise then to decrease the parameter: min_read_count
   
 ## Directed Acyclic Graph
 [![DAG](dag.png)](http://htmlpreview.github.io/?https://github.com/IARCbioinfo/template-nf/blob/master/dag.html)
