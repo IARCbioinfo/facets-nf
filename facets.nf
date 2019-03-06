@@ -32,6 +32,11 @@ params.cval_preproc = null
 params.cval_proc1 = null
 params.cval_proc2 = null
 params.min_read_count = null
+snp_nbhd = params.snp_nbhd
+cval_preproc = params.cval_preproc
+cval_proc1 = params.cval_proc1
+cval_proc2 = params.cval_proc2
+min_read_count = params.min_read_count
 if (params.analysis_type == "genome" ) {
 			snp_nbhd = 1000   
 			cval_preproc = 35
