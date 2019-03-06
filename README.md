@@ -86,10 +86,12 @@ Flags are special parameters without value.
   
 ## Common errors
 In case of low coverage you may get the following error during facets process:
-Loading required package: pctGCdata
-Error in fit.cpt.tree(genomdat, cval = cval, hscl = hscl, delta = delta) :
-NA/NaN/Inf in foreign function call (arg 9)
-Calls: preProcSample -> segsnps -> fit.cpt.tree
+  ```
+  Loading required package: pctGCdata
+  Error in fit.cpt.tree(genomdat, cval = cval, hscl = hscl, delta = delta) :
+  NA/NaN/Inf in foreign function call (arg 9)
+  Calls: preProcSample -> segsnps -> fit.cpt.tree
+    ```
 => We advise then to decrease the parameter: min_read_count
   
 ## Directed Acyclic Graph
