@@ -47,6 +47,7 @@ Dbsnp vcf reference can be downloaded for:
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
+| --mem     |    4 GB       | memory for the face |
 | --snppileup_bin    |            snp-pileup | Path to snppileup software (default: snp-pileup)
 | --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome - sets next five parameters values  |
 | --snp_nbhd   |            1000 or 250 | 1st value for genome, 2nd value for exome analysis |
@@ -80,9 +81,10 @@ Flags are special parameters without value.
   | Type      | Description     |
   |-----------|---------------|
   | All_stats.txt    | Stats for all samples pooled |
-  | Sample_CNV.txt    | ...... |
-  | Sample_CNV_spider.txt    | ...... |
-  | Sample_CNV.png or Sample_CNV.pdf    | ...... |
+  | Sample_CNV.txt    | A few stats for the sample |
+  | Sample_CNV_spider.txt    | spider plot for parameter estimates |
+  | Sample_CNV.png or Sample_CNV.pdf    | output plot of CNV |
+  | Sample.RData | R object with 5 objects (xx,oo_large,fit_large,oo_fine,fit_fine), corresponding to the facet outputs | 
   
 ## Common errors
 In case of low coverage you may get the following error during facets process:
@@ -103,4 +105,6 @@ In case of low coverage you may get the following error during facets process:
   |-----------|---------------|-----------------|
   | Matthieu Foll*    |            follm@iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
   | Catherine Voegele    |            voegelec@iarc.fr | Developer |
+  | Nicolas Alcala    |            alcalan@fellows.iarc.fr | Developer |
+
 
