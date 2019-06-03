@@ -47,7 +47,7 @@ Dbsnp vcf reference can be downloaded for:
   * #### Optional
 | Name      | Default value | Description     |
 |-----------|---------------|-----------------|
-| --mem     |    4 GB       | memory for the face |
+| --mem     |    4 GB       | memory allocated to each nextflow process |
 | --snppileup_bin    |            snp-pileup | Path to snppileup software (default: snp-pileup)
 | --analysis_type    |            genome/exome | Type of analysis: whole genome (by default) or whole exome - sets next five parameters values  |
 | --snp_nbhd   |            1000 or 250 | 1st value for genome, 2nd value for exome analysis |
@@ -84,7 +84,15 @@ Flags are special parameters without value.
   | Sample_CNV.txt    | A few stats for the sample |
   | Sample_CNV_spider.txt    | spider plot for parameter estimates |
   | Sample_CNV.png or Sample_CNV.pdf    | output plot of CNV |
-  | Sample.RData | R object with 5 objects (xx,oo_large,fit_large,oo_fine,fit_fine), corresponding to the facet outputs | 
+  | Sample.RData | R object with 5 objects (xx,oo_large,fit_large,oo_fine,fit_fine) | 
+  
+  In Sample.RData:
+  - xx corresponds to the pre-processed data using the segmentation critical value cval_preproc (output of function preProcSample)
+  - oo_large corresponds to the processing of xx using the segmentation critical value cval_proc1 (output of function procSample(xx,cval = cval_proc1,...) )
+  - fit_large: cluster specific copy number and cellular fraction (output of emcncf(oo_large))
+  - oo_fine corresponds to the processing of xx using the segmentation critical value cval_proc2 (output of procSample(xx, cval = cval_proc2, ...))
+  - fit_fine: cluster specific copy number and cellular fraction ( output of emcncf(oo_fine))
+
   
 ## Common errors
 In case of low coverage you may get the following error during facets process:
