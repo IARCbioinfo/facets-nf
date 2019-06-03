@@ -49,3 +49,5 @@ cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$lo
   
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
+save(xx,oo_large,fit_large,oo_fine,fit_fine,file=paste0(sample_name,"_CNV.RData") )
+writeLines(capture.output(sessionInfo()), "sessionInfo.txt")

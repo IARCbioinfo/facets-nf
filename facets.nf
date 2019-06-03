@@ -32,11 +32,13 @@ params.cval_preproc = null
 params.cval_proc1 = null
 params.cval_proc2 = null
 params.min_read_count = null
+params.mem = 4
 snp_nbhd = params.snp_nbhd
 cval_preproc = params.cval_preproc
 cval_proc1 = params.cval_proc1
 cval_proc2 = params.cval_proc2
 min_read_count = params.min_read_count
+
 if (params.analysis_type == "genome" ) {
 			snp_nbhd = 1000   
 			cval_preproc = 35
@@ -107,7 +109,12 @@ if (params.help) {
     log.info "--output_pdf           Program will generate a PDF output (takes longer)"
     log.info ""
     exit 0
-} 
+}else{
+  log.info "tn_file=${params.tn_file}"
+  log.info "ref=${params.ref}"
+  log.info "mem=${params.mem}"
+
+}
 
 //Check the params
 //assert (params.tumor_bam_folder != true) && (params.tumor_bam_folder != null)  : "please specify --tumor_bam_folder"
@@ -198,7 +205,9 @@ log.info ""
 
 process snppileup {
 // Input folder with pairs of bam => Output: pairX.csv.gz
-
+    memory params.mem+'G'
+    cpus '1'
+	
     input:
     file tn from tn_bambai
 
@@ -215,6 +224,8 @@ process snppileup {
 
 process facets {
 // Input: pairX.csv.gz => Outputs: pairX_stats.txt (to aggregate into 1 file), CNV.txt, CNV.png (or pdf) , CNV_spider.pdf
+    memory params.mem+'G'
+    cpus '1'
 
     tag { tumor_normal_tag }
     
@@ -229,6 +240,7 @@ process facets {
 	   file("${tumor_normal_tag}.csv.gz_CNV_spider.pdf")
 	   file("${tumor_normal_tag}.csv.gz_CNV.png") optional true
 	   file("${tumor_normal_tag}.csv.gz_CNV.pdf") optional true
+	   file("*.RData")
 
     shell:
 	
