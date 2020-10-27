@@ -35,31 +35,34 @@ def show_help (){
 
 
       Execution options:
-      --snppileup_bin	     [PATH]		 Path to snppileup software (default: snp-pileup)
-      -profile [str]                 Configuration profile to use (Available: singularity, docker)
+      --snppileup_bin	     [path]		 Path to snppileup software (default: snp-pileup)
+      -profile             [str]     Configuration profile to use (Available: singularity, docker)
 
     Outputs:
-      --output_folder        FOLDER              Folder name for output files (default: ./facets)
+      --output_folder        [folder]    Folder name for output files (default: ./facets)
 
+    Guest tumor/normal pairs directly from cram/bam files:
 
-    Input guest pairs directlly from cram/bam files:
       --cram         [bool]         the input are CRAM files [def:false]
 
       Pairs in separate directories:
+
       --tumor_dir     [directory]       Directory containing tumor bam/cram files
       --normal_dir    [directory]       Directory containing normal bam/cram files
 
       Pairs in the same directory:
+
       --cohort_dir    [directory]       Directory containing all bam/cram files
 
       Files suffixes :
+
       --suffix_tumor	     [STRING]		 tumor file name's specific suffix (by default _T)
       --suffix_normal	     [STRING]		 normal file name's specific suffix (by default _N)
 
 
     Visualization :
 
-     --facets_plot [bool]          Facets will generate a PDF output (def:true)"
+     --facets_plot [bool]          Facets will generate a PDF output (def:true)
 
       """.stripIndent()
 }
@@ -166,7 +169,7 @@ process facets{
   def plot = params.output_pdf ? "PDF":""
   if(params.debug == false){
   """
-  Rscript ${baseDir}/bin/facets.r \\
+  Rscript ${baseDir}/bin/facets.cval.r \\
           ${snppileup_counts} \\
           ${params.ref} ${params.snp_nbhd} \\
           ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count}\\
@@ -174,7 +177,7 @@ process facets{
   """
    }else{
      """
-    echo Rscript ${baseDir}/bin/facets.r \\
+    echo Rscript ${baseDir}/bin/facets.cval.r \\
              ${snppileup_counts} \\
              ${params.ref} ${params.snp_nbhd} \\
              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count}\\
