@@ -88,7 +88,7 @@ if(params.tn_file){
 
 //chanel for VCF file
 
-ch_vcf = Channel.value(file(params.dbsnp_vcf_ref, checkIfExists=TRUE)).ifEmpty{exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}"}
+ch_vcf = Channel.value(file(params.dbsnp_vcf_ref)).ifEmpty{exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}"}
 
 //change default for exome
 if (params.analysis_type == "exome"){
