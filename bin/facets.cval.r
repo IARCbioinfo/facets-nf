@@ -19,7 +19,7 @@ if (!is.na(commandArgs(TRUE)[8]) && commandArgs(TRUE)[8]=="PDF") {
 #we set a random set for reproducible analysis PreprocSamples
 set.seed(1234)
 
-sample_name = gsub(".csv.gz","",datafile)
+sample_name = gsub("csv.gz","",datafile)
 rcmat = readSnpMatrixDT(datafile)
 
 
@@ -31,7 +31,7 @@ plot_facets = function (oo_facets, fit_facets , text_title, plot_name, pref = "c
   }
   plotSample(x = oo_facets, emfit = fit_facets, sname = text_title)
   dev.off()
-  pdf(paste(plot_name,"_CNV_spider.pdf",sep=""),width = 6,height = 6)
+  pdf(paste(plot_name,pref,"_CNV_spider.pdf",sep=""),width = 6,height = 6)
   logRlogORspider(oo_facets$out, oo_facets$dipLogR)
   dev.off()
 }
