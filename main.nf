@@ -86,6 +86,10 @@ if(params.tn_file){
  tn_pairs  = build_tn_pairs_from_dir(params.tumor_dir,params.normal_dir,params.suffix_tumor,params.suffix_normal,params.cram)
 }
 
+//chanel for VCF file
+
+ch_vcf = Channel.value(file(params.dbsnp_vcf_ref, checkIfExists=TRUE)).ifEmpty{exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}"}
+
 //change default for exome
 if (params.analysis_type == "exome"){
     params.min_read_count = 35
@@ -108,7 +112,7 @@ process snppileup {
 
     input:
     set val(tumor_id), file(tumor), file(tumor_index), file(normal), file(normal_index) from tn_pairs
-
+    file(vcf) from ch_vcf
     output:
     set val(tumor_id), file("${tumor_id}.csv.gz") into snppileup_result
 
@@ -121,7 +125,7 @@ process snppileup {
       --min-base-quality ${params.min_base_quality} \\
       --pseudo-snps ${params.pseudo_snps} \\
       --min-read-counts ${params.min_read_count} \\
-       ${params.dbsnp_vcf_ref} ${tumor_id}.csv.gz ${normal} ${tumor}
+       ${vcf} ${tumor_id}.csv.gz ${normal} ${tumor}
     """
    }else{
      """
@@ -131,7 +135,7 @@ process snppileup {
        --min-base-quality ${params.min_base_quality} \\
        --pseudo-snps ${params.pseudo_snps} \\
        --min-read-counts ${params.min_read_count} \\
-        ${params.dbsnp_vcf_ref} ${tumor_id}.csv.gz ${normal} ${tumor}
+        ${vcf} ${tumor_id}.csv.gz ${normal} ${tumor}
       #we create the file to continue our process
       touch ${tumor_id}.csv.gz
      """
@@ -224,19 +228,20 @@ def parse_files_dir(dir, suffix, is_cram){
   def file_ext = is_cram ? '.cram':'.bam'
   def file_index = is_cram ? '.crai':'.bai'
 
-   //println regex
+  println regex
+  println dir+'/*'+suffix+file_ext
 
    try { assert file(dir).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" }
    catch (AssertionError e) { println e.getMessage() }
    assert file(dir).listFiles().findAll { it.name ==~ /${regex}/ }.size() > 0 : "tumor BAM folder contains no BAM"
 
-  //println dir+'/*'+suffix+file_ext
+  println dir+'/*'+suffix+file_ext
 
   def  alignments = Channel.fromPath( dir+'/*'+suffix+file_ext )
  		    .ifEmpty { error "Cannot find any bam/cram file in: ${dir}" }
  		    .map {  path -> [ path.name.replace("${suffix}${file_ext}",""), path ] }
 
-  //println dir+'/*'+suffix+file_ext+file_index
+  println dir+'/*'+suffix+file_ext+file_index
     // recovering of bai files
   def alignments_index = Channel.fromPath( dir+'/*'+suffix+file_ext+file_index)
   		    .ifEmpty { error "Cannot find any bai file in: ${dir}" }
