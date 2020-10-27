@@ -14,10 +14,10 @@ if (!is.na(commandArgs(TRUE)[8]) && commandArgs(TRUE)[8]=="PDF") {
 } else {
 	plot_pdf = FALSE
 }
-	
 
 
-sample_name = gsub(".cvs.gz","",datafile)
+
+sample_name = gsub(".csv.gz","",datafile)
 rcmat = readSnpMatrixDT(datafile)
 
 
@@ -39,14 +39,14 @@ oo_large = procSample(xx, cval = cur_params[3])
 fit_large = emcncf(oo_large)
 oo_fine = procSample(xx, cval = cur_params[4], dipLogR = oo_large$dipLogR)
 fit_fine = emcncf(oo_fine)
-  
+
 text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
-  
+
 plot_facets(oo_fine, fit_fine, text_title, sample_name,plot_pdf)
 
 cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"_stats.txt",sep=""),sep="\t")
 cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"_stats.txt",sep=""),sep="\t",append = T)
-  
+
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
 save(xx,oo_large,fit_large,oo_fine,fit_fine,file=paste0(sample_name,"_CNV.RData") )

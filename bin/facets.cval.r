@@ -19,7 +19,7 @@ if (!is.na(commandArgs(TRUE)[8]) && commandArgs(TRUE)[8]=="PDF") {
 #we set a random set for reproducible analysis PreprocSamples
 set.seed(1234)
 
-sample_name = gsub(".cvs.gz","",datafile)
+sample_name = gsub(".csv.gz","",datafile)
 rcmat = readSnpMatrixDT(datafile)
 
 
