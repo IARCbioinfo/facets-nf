@@ -158,13 +158,11 @@ process facets{
   input:
   set val(tumor_id), file(snppileup_counts) from snppileup_result
 
-
-
-
   output:
   file("${tumor_id}.def_cval${params.cval_proc2}_stats.txt") into stats_summary
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV.txt")
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV_spider.pdf")
+  file("${tumor_id}.R_sessionInfo.txt")
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV.png") optional true
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV.pdf") optional true
   file("${tumor_id}.cval*.pdf") optional true
