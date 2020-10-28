@@ -150,8 +150,8 @@ process snppileup {
 
 process facets{
   tag "${tumor_id}-facets"
-  label 'load_low1'
-  //label 'load_1cpu30gb'
+  //label 'load_low1'
+  label 'load_1cpu20gb'
 
   publishDir params.output_folder+'/facets/', mode: 'copy'
 
