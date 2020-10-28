@@ -91,7 +91,6 @@ if(params.tn_file){
 }
 
 //chanel for VCF file
-
 ch_vcf = Channel.value(file(params.dbsnp_vcf_ref)).ifEmpty{exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}"}
 
 //change default for exome
@@ -108,7 +107,7 @@ print_params()
 //we compute the snp_pileup process using 1CPU with low memory
 process snppileup {
     tag "${tumor_id}-snppileup"
-    label 'load_low1'
+    label 'load_snpp'
 
     input:
     set val(tumor_id), file(tumor), file(tumor_index), file(normal), file(normal_index) from tn_pairs
@@ -146,8 +145,7 @@ process snppileup {
 
 process facets{
   tag "${tumor_id}-facets"
-  //label 'load_low1'
-  label 'load_1cpu20gb'
+  label 'load_facets'
 
   publishDir params.output_folder+'/facets/', mode: 'copy'
 
@@ -197,7 +195,7 @@ process facets{
    }
 }
 
-//we store a summary of the default facets run
+//we store a summary of global variables
 stats_summary.collectFile(name: 'facets_stats_default_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
 stats_summary_cval500.collectFile(name: 'facets_stats_cval500_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
 stats_summary_cval1000.collectFile(name: 'facets_stats_cval1000_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
@@ -212,24 +210,12 @@ stats_summary_cval1500.collectFile(name: 'facets_stats_cval1500_summary.txt', st
 
 //funtion that return the tn_bambai channel from a set of paths
 def build_tn_pairs_from_dir(tumor_dir,normal_dir,suffix_tumor,suffix_normal,is_cram){
-    //we parse the tumor file and the
+    //we parse the tumor file and the normal files
     def tumor_files = parse_files_dir(tumor_dir,suffix_tumor,is_cram)
     def normal_files = parse_files_dir(normal_dir,suffix_normal,is_cram)
-    /*println "Tumor files"
-    println tumor_files.length()
-    println "Normal files"
-    println normal_files.length()
-    //tumor_files.view()
-    //normal_files.view()
-    */
-    //we create the tumor normal pairs Channel with index
+    //we create the tumor normal pairs Channel with index and sample names
     def tn_pairs = tumor_files.join(normal_files)
-    /*tn_bambai = tumor_files
-      .phase(normal_files)
-      .map {tumor_bb, normal_bb -> [ tumor_bb[1], tumor_bb[2], normal_bb[1], normal_bb[2] ] } */
-
     return tn_pairs
-
 }
 
 //this function load a BAM/CRAM along with the index for each file
@@ -239,20 +225,15 @@ def parse_files_dir(dir, suffix, is_cram){
   def file_ext = is_cram ? '.cram':'.bam'
   def file_index = is_cram ? '.crai':'.bai'
 
-  println regex
-  println dir+'/*'+suffix+file_ext
-
    try { assert file(dir).exists() : "\n WARNING : input tumor BAM folder not located in execution directory" }
    catch (AssertionError e) { println e.getMessage() }
    assert file(dir).listFiles().findAll { it.name ==~ /${regex}/ }.size() > 0 : "tumor BAM folder contains no BAM"
 
-  println dir+'/*'+suffix+file_ext
 
   def  alignments = Channel.fromPath( dir+'/*'+suffix+file_ext )
  		    .ifEmpty { error "Cannot find any bam/cram file in: ${dir}" }
  		    .map {  path -> [ path.name.replace("${suffix}${file_ext}",""), path ] }
 
-  println dir+'/*'+suffix+file_ext+file_index
     // recovering of bai files
   def alignments_index = Channel.fromPath( dir+'/*'+suffix+file_ext+file_index)
   		    .ifEmpty { error "Cannot find any bai file in: ${dir}" }
@@ -276,11 +257,9 @@ def parse_tn_file (tn_file,path,is_bam){
                file(path + "/" + row.normal),
                file(path + "/" + row.normal+file_ext)]}
       .ifEmpty{exit 1, "${tn_file} was empty - no tumor/normal supplied" }
-  //.set{tn_bambai}
 	//we return the channel
   return tn_pairs
 }
-
 
 
 // print the calling parameter to the log and a log file
