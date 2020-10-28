@@ -108,4 +108,4 @@ write.table(fit_fine$cncf, file=paste(sample_name,"cval1500","_CNV.txt",sep=""),
 }
 
 #we save the facets info
-writeLines(capture.output(sessionInfo()), paste(sample_name,"R_sessionInfo.txt",sep="")
+writeLines(capture.output(sessionInfo()), paste(sample_name,"R_sessionInfo.txt",sep=""))
