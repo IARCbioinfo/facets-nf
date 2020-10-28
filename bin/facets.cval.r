@@ -29,6 +29,7 @@ if (!is.na(commandArgs(TRUE)[9]) && commandArgs(TRUE)[9]=="PDF") {
 set.seed(1234)
 
 sample_name = gsub("csv.gz","",datafile)
+sample_name_no_dot = gsub(".csv.gz","",datafile)
 rcmat = readSnpMatrixDT(datafile)
 
 
@@ -54,42 +55,41 @@ fit1=procSample(xx, cval=cur_params[3], min.nhet=15, dipLogR=NULL) #fit fine
 oo_fine=procSample(xx, cval=cur_params[4], min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
 fit_fine = emcncf(oo_fine)
 #we plot the results
-text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
+text_title=paste(sample_name_no_dot,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
 
 pref=paste("def_cval",cur_params[4],sep="")
 
 plot_facets(oo_fine, fit_fine, text_title, sample_name,pref,plot_pdf)
 #we write the ouput table
 cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,pref,"_stats.txt",sep=""),sep="\t")
-cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,pref,"_stats.txt",sep=""),sep="\t",append = T)
+cat(sample_name_no_dot, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,pref,"_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,pref,"_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
 
 #we have to compute multiples cvalues 500,1000 and 1500
 if(m_cval){
-
+	
 #You can specify cval that is large enough to avoid hyper-segmentation
 oo_fine=procSample(xx, cval=500, min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
 fit_fine = emcncf(oo_fine)
 #we plot the results
-text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
+text_title=paste(sample_name_no_dot,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
 plot_facets(oo_fine, fit_fine, text_title, sample_name,"cval500",plot_pdf)
 #we write the ouput table
 cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"cval500","_stats.txt",sep=""),sep="\t")
-cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval500","_stats.txt",sep=""),sep="\t",append = T)
+cat(sample_name_no_dot, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval500","_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"cval500","_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
-
 
 #You can specify cval that is large enough to avoid hyper-segmentation
 oo_fine=procSample(xx, cval=1000, min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
 fit_fine = emcncf(oo_fine)
 #we plot the results
-text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
+text_title=paste(sample_name_no_dot,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
 plot_facets(oo_fine, fit_fine, text_title, sample_name,"cval1000",plot_pdf)
 #we write the ouput table
 cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"cval1000","_stats.txt",sep=""),sep="\t")
-cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval1000","_stats.txt",sep=""),sep="\t",append = T)
+cat(sample_name_no_dot, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval1000","_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"cval1000","_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
 
@@ -97,11 +97,11 @@ write.table(fit_fine$cncf, file=paste(sample_name,"cval1000","_CNV.txt",sep=""),
 oo_fine=procSample(xx, cval=1500, min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
 fit_fine = emcncf(oo_fine)
 #we plot the results
-text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
+text_title=paste(sample_name_no_dot,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
 plot_facets(oo_fine, fit_fine, text_title, sample_name,"cval1500",plot_pdf)
 #we write the ouput table
 cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"cval1500","_stats.txt",sep=""),sep="\t")
-cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval1500","_stats.txt",sep=""),sep="\t",append = T)
+cat(sample_name_no_dot, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval1500","_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"cval1500","_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
 

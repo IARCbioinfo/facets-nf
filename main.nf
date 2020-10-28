@@ -105,10 +105,6 @@ if (params.analysis_type == "exome"){
 
 print_params()
 
-//we dump the value of the channel
-//println tn_aln.length()
-//tn_pairs.view()
-
 //we compute the snp_pileup process using 1CPU with low memory
 process snppileup {
     tag "${tumor_id}-snppileup"
@@ -165,6 +161,10 @@ process facets{
   file("${tumor_id}.R_sessionInfo.txt")
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV.png") optional true
   file("${tumor_id}.def_cval${params.cval_proc2}_CNV.pdf") optional true
+  //we rescue other optional files for diferent cval values
+  file("${tumor_id}.cval500_stats.txt") optional true into stats_summary_cval500
+  file("${tumor_id}.cval1000_stats.txt") optional true into stats_summary_cval1000
+  file("${tumor_id}.cval1500_stats.txt") optional true into stats_summary_cval1500
   file("${tumor_id}.cval*.pdf") optional true
   file("${tumor_id}.cval*.txt") optional true
 
@@ -198,7 +198,10 @@ process facets{
 }
 
 //we store a summary of the default facets run
-stats_summary.collectFile(name: 'facets_stats_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
+stats_summary.collectFile(name: 'facets_stats_default_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
+stats_summary_cval500.collectFile(name: 'facets_stats_cval500_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
+stats_summary_cval1000.collectFile(name: 'facets_stats_cval1000_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
+stats_summary_cval1500.collectFile(name: 'facets_stats_cval1500_summary.txt', storeDir: params.output_folder, seed: 'Sample \t purity \t ploidy \t dipLogR \t loglik', newLine: true, skip: 1)
 
 
 /*
