@@ -10,11 +10,20 @@ genome = commandArgs(TRUE)[2] # "hg19"
 cur_params = as.numeric(c(commandArgs(TRUE)[3:6])) # c(1000,25,300,150)
 ndepth_param = as.numeric(commandArgs(TRUE)[7]) # 20
 
-if (!is.na(commandArgs(TRUE)[8]) && commandArgs(TRUE)[8]=="PDF") {
+
+#we check if we have to compute multiples cvalues
+if (!is.na(commandArgs(TRUE)[8]) && commandArgs(TRUE)[8]=="MCVAL") {
+	m_cval = TRUE
+} else {
+	m_cval = FALSE
+}
+
+if (!is.na(commandArgs(TRUE)[9]) && commandArgs(TRUE)[9]=="PDF") {
 	plot_pdf = TRUE
 } else {
 	plot_pdf = FALSE
 }
+
 
 #we set a random set for reproducible analysis PreprocSamples
 set.seed(1234)
@@ -40,19 +49,24 @@ plot_facets = function (oo_facets, fit_facets , text_title, plot_name, pref = "c
 #snp_nbhd: 500-5000:500 window size, the smaller the most number of SNPs used
 #cval_preproc :
 xx = preProcSample(rcmat, gbuild = genome, ndepth = ndepth_param, snp.nbhd = cur_params[1], cval = cur_params[2])
-fit1=procSample(xx, cval=150, min.nhet=15, dipLogR=NULL) #fit fine
-
+fit1=procSample(xx, cval=cur_params[3], min.nhet=15, dipLogR=NULL) #fit fine
 #You can specify cval that is large enough to avoid hyper-segmentation
-oo_fine=procSample(xx, cval=300, min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
+oo_fine=procSample(xx, cval=cur_params[4], min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
 fit_fine = emcncf(oo_fine)
 #we plot the results
 text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
-plot_facets(oo_fine, fit_fine, text_title, sample_name,"cval300",plot_pdf)
+
+pref=paste("cval",cur_params[4],sep="")
+
+plot_facets(oo_fine, fit_fine, text_title, sample_name,pref,plot_pdf)
 #we write the ouput table
-cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"cval300","_stats.txt",sep=""),sep="\t")
-cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval300","_stats.txt",sep=""),sep="\t",append = T)
+cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,pref,"_stats.txt",sep=""),sep="\t")
+cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,pref,"_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
-write.table(fit_fine$cncf, file=paste(sample_name,"cval300","_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
+write.table(fit_fine$cncf, file=paste(sample_name,pref,"_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
+
+#we have to compute multiples cvalues 500,1000 and 1500
+if(m_cval){
 
 #You can specify cval that is large enough to avoid hyper-segmentation
 oo_fine=procSample(xx, cval=500, min.nhet=15, dipLogR=fit1$dipLogR)#large fit to avoid short segments
@@ -90,3 +104,5 @@ cat("", "purity", "ploidy", "dipLogR", "loglik", "\n", file=paste(sample_name,"c
 cat(sample_name, fit_fine$purity, fit_fine$ploidy, fit_fine$dipLogR, fit_fine$loglik, file=paste(sample_name,"cval1500","_stats.txt",sep=""),sep="\t",append = T)
 fit_fine$cncf['cnlr.median-dipLogR'] = fit_fine$cncf$cnlr.median - fit_fine$dipLogR
 write.table(fit_fine$cncf, file=paste(sample_name,"cval1500","_CNV.txt",sep=""), quote = F, sep = "\t", row.names = F)
+
+}

@@ -23,10 +23,11 @@ def show_help (){
 
       --snp_nbhd	         [number]	 By default 1000 for genome and 250 for exome
       --cval_preproc	     [number]	 By default 35 for genome, 25 for exome
-      --cval_proc1	       [number]	 By default 300 for genome, 150 for exome
-      --cval_proc2	       [number]	 By default 150 for genome, 75 for exome
+      --cval_proc1	       [number]	 By default 150 for genome, 75 for exome
+      --cval_proc2	       [number]	 By default 300 for genome, 150 for exome
       --min_read_count	   [number]	 By default 20 for genome, 35 for exome
 
+      --m_cval             [bool]    Use multiple cval values (500,1000,1500) to study the number of segments [def:true]
 
     SNP-pipelup options:
       --min-map-quality	   [number]	 Minimum read mapping quality [def:15]
@@ -98,8 +99,8 @@ if (params.analysis_type == "exome"){
     params.min_read_count = 35
     params.snp_nbhd = 250
     params.cval_preproc = 25
-    params.cval_proc1 = 150
-    params.cval_proc2 = 75
+    params.cval_proc1 = 75
+    params.cval_proc2 = 150
 }
 
 print_params()
@@ -166,14 +167,15 @@ process facets{
 
 
   script:
-  def plot = params.output_pdf ? "PDF":""
+  def plot = params.output_pdf ? "PDF":"NOPDF"
+  def mcval = params.m_cval ?  "MCVAL":"CVAL"
   if(params.debug == false){
   """
   Rscript ${baseDir}/bin/facets.cval.r \\
           ${snppileup_counts} \\
           ${params.ref} ${params.snp_nbhd} \\
           ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count}\\
-          ${plot}
+          ${mcval} ${plot}
   """
    }else{
      """
@@ -181,7 +183,7 @@ process facets{
              ${snppileup_counts} \\
              ${params.ref} ${params.snp_nbhd} \\
              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count}\\
-             ${plot}
+             ${mcval} ${plot}
       #we touch some dummy file
       touch ${tumor_id}.stats.txt
       touch ${tumor_id}.CNV.txt
