@@ -56,7 +56,7 @@ fit_fine = emcncf(oo_fine)
 #we plot the results
 text_title=paste(sample_name,": Purity=",round(fit_fine$purity,3)*100,"%; Ploidy=",round(fit_fine$ploidy,2),sep="")
 
-pref=paste("cval",cur_params[4],sep="")
+pref=paste("def_cval",cur_params[4],sep="")
 
 plot_facets(oo_fine, fit_fine, text_title, sample_name,pref,plot_pdf)
 #we write the ouput table
