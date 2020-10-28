@@ -166,7 +166,7 @@ process facets{
   file("${tumor_id}.cval1000_stats.txt") optional true into stats_summary_cval1000
   file("${tumor_id}.cval1500_stats.txt") optional true into stats_summary_cval1500
   file("${tumor_id}.cval*.pdf") optional true
-  file("${tumor_id}.cval*.txt") optional true
+  file("${tumor_id}.cval*_CNV.txt") optional true
 
 
   script:
