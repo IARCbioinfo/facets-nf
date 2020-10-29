@@ -28,7 +28,7 @@ Pipeline using facets for fraction and copy number estimate from tumor/normal se
 
 ## Usage
   ```
-  #using a file tn_pairs file
+  #using a tn_pairs file
   nextflow run iarcbioinfo/facets-nf -r 2.0 \
    -profile singularity --ref hg38  \
    --dbsnp_vcf_ref snps.vcf.gz \
@@ -42,7 +42,7 @@ Pipeline using facets for fraction and copy number estimate from tumor/normal se
    --tumor_dir /path/tumor \
    --normal_dir /path/normal  
   
-  #Activate CRAM files 
+  #activate CRAM files mode
   nextflow run iarcbioinfo/facets-nf -r 2.0 \
    -profile singularity --ref hg38  \
    --dbsnp_vcf_ref snps.vcf.gz \
@@ -180,4 +180,4 @@ export TMPDIR=/tmp
   | Matthieu Foll*    |            follm@iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
   | Catherine Voegele    |            voegelec@iarc.fr | Developer |
   | Nicolas Alcala    |            alcalan@fellows.iarc.fr | Developer |
-  | Alex Di Genova | digenvaa@fellows.iarc.fr| Developer |
+  | Alex Di Genova | digenovaa@fellows.iarc.fr| Developer |
