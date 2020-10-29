@@ -1,5 +1,5 @@
 # facets-nf
-## current version 2.0
+
 
 [![CircleCI](https://circleci.com/gh/IARCbioinfo/template-nf.svg?style=svg)](https://circleci.com/gh/IARCbioinfo/facets-nf)
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/iarcbioinfo/facets-nf/)
@@ -7,6 +7,24 @@
 [![DOI](https://zenodo.org/badge/94193130.svg)](https://zenodo.org/badge/latestdoi/94193130)
 
 
+Table of Contents
+=================
+  * [current version 2.0](#current-version-20)
+  * [Description](#description)
+  * [Usage](#usage)
+  * [Dependencies](#dependencies)
+  * [Input (mandatory)](#input--mandatory-)
+    + [Example of Tumor/Normal pairs file (--tn_file)](#example-of-tumor-normal-pairs-file----tn-file-)
+  * [Parameters](#parameters)
+      - [Minimal](#minimal)
+      - [Optional](#optional)
+  * [Output](#output)
+  * [Common errors](#common-errors)
+    + [Facets](#facets)
+    + [Singularity](#singularity)
+  * [Contributions](#contributions)
+
+## current version 2.0
 ## Description
 Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data.
 
