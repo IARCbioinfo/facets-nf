@@ -29,21 +29,21 @@ Pipeline using facets for fraction and copy number estimate from tumor/normal se
 ## Usage
   ```
   #using a tn_pairs file
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+  nextflow run iarcbioinfo/facets-nf -r v2.0 \
    -profile singularity --ref hg38  \
    --dbsnp_vcf_ref snps.vcf.gz \
    --tn_file tn_pairs.txt \
    --cohort_dir /path/CRAM 
   
   # Or using directories storing the CRAM/BAM files
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+  nextflow run iarcbioinfo/facets-nf -r v2.0 \
    -profile singularity --ref hg38  \
    --dbsnp_vcf_ref snps.vcf.gz \
    --tumor_dir /path/tumor \
    --normal_dir /path/normal  
   
   #activate CRAM files mode
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+  nextflow run iarcbioinfo/facets-nf -r v2.0 \
    -profile singularity --ref hg38  \
    --dbsnp_vcf_ref snps.vcf.gz \
    --tumor_dir /path/tumor \
