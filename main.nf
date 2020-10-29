@@ -186,11 +186,11 @@ process facets{
              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count}\\
              ${mcval} ${plot}
       #we touch some dummy file
-      touch ${tumor_id}.stats.txt
-      touch ${tumor_id}.CNV.txt
-      touch ${tumor_id}.CNV_spider.pdf
-      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" > ${tumor_id}.stats.txt
-      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" >> ${tumor_id}.stats.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV.tx
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV_spider.pdf
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" > ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" >> ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
      """
    }
 }
@@ -261,15 +261,26 @@ def parse_tn_file (tn_file,path,is_bam){
   return tn_pairs
 }
 
-
 // print the calling parameter to the log and a log file
 def print_params () {
+  //software versions for v2.0
+  def software_versions = ['snp-pileup' : '0.5.14',
+                          'r-base'   : '4.0.3',
+                          'data.table' : '1.13.2' ,
+                          'facets'     :'0.5.14',
+                          'pctGCdata'  :'0.2.0' ]
+
   //we print the parameters
   log.info "\n"
   log.info "-\033[2m------------------Calling PARAMETERS--------------------\033[0m-"
   log.info params.collect{ k,v -> "${k.padRight(18)}: $v"}.join("\n")
   log.info "-\033[2m--------------------------------------------------------\033[0m-"
   log.info "\n"
+  log.info "-\033[2m------------------Software versions--------------------\033[0m-"
+  log.info software_versions.collect{ k,v -> "${k.padRight(18)}: $v"}.join("\n")
+  log.info "-\033[2m--------------------------------------------------------\033[0m-"
+  log.info "\n"
+
 
   //we print the parameters to a log file
    def output_d = new File("${params.output_folder}/nf-pipeline_info/")
@@ -285,6 +296,10 @@ def print_params () {
         report_params+="nextflow build   : "+nextflow.build+"\n"
         report_params+="Command line     : \n"+workflow.commandLine.split(" ").join(" \\\n")
         report_params+="\n--------------------------------------------------------\n"
+        report_params+="-----------------Software versions--------------------\n"
+        report_params+=software_versions.collect{ k,v -> "${k.padRight(18)}: $v"}.join("\n")
+        report_params+="\n--------------------------------------------------------\n"
+
    output_tf.withWriter { w -> w << report_params}
 }
 
