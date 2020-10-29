@@ -7,3 +7,4 @@ dependencies:
   - r-base
   - r-facets
   - r-data.table
+  - snp-pileup
