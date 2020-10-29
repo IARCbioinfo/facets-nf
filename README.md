@@ -8,7 +8,32 @@
 
 
 ## Description
-Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing
+Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data.
+
+## Usage
+  ```
+  #using a file tn_pairs file
+  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+   -profile singularity --ref hg38  \
+   --dbsnp_vcf_ref snps.vcf.gz \
+   --tn_file tn_pairs.txt \
+   --cohort_dir /path/CRAM 
+  
+  # Or using directories storing the CRAM/BAM files
+  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+   -profile singularity --ref hg38  \
+   --dbsnp_vcf_ref snps.vcf.gz \
+   --tumor_dir /path/tumor \
+   --normal_dir /path/normal  
+  
+  #Activate CRAM files 
+  nextflow run iarcbioinfo/facets-nf -r 2.0 \
+   -profile singularity --ref hg38  \
+   --dbsnp_vcf_ref snps.vcf.gz \
+   --tumor_dir /path/tumor \
+   --normal_dir /path/normal  \
+   --cram true  
+  ```
 
 ## Dependencies
 
@@ -30,7 +55,15 @@ See the [IARC-nf](https://github.com/IARCbioinfo/IARC-nf) repository for more in
   | --cohort_dir    | Folder containing all BAM/CRAM files |  
   | --tn_file    | File containing the list of names of BAM files to be processed |
   
+### Example of Tumor/Normal pairs file (--tn_file)
+A text file tabular separated, with the following header:
 
+```
+tumor_id	sample	tumor	normal
+sample1_T1	sample1	sample1_T.cram	sample1_N.cram
+sample2_T1	sample2	sample2_T.cram	sample2_N.cram
+sample3_T1	sample3	sample3_T.cram	sample3_N.cram
+``` 
 
 
 ## Parameters
@@ -83,44 +116,31 @@ SNP reference (vcf file) can be downloaded from:
 
 
 
-## Usage
-  ```
-  #using a file tn_pairs file
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
-   -profile singularity --ref hg38  \
-   --dbsnp_vcf_ref snps.vcf.gz \
-   --tn_file tn_pairs.txt \
-   --cohort_dir /path/CRAM 
-  
-  # Or using directories storing the CRAM/BAM files
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
-   -profile singularity --ref hg38  \
-   --dbsnp_vcf_ref snps.vcf.gz \
-	--tumor_dir /path/tumor \
-	--normal_dir /path/normal  
-  
-  #Activate CRAM files 
-  nextflow run iarcbioinfo/facets-nf -r 2.0 \
-   -profile singularity --ref hg38  \
-   --dbsnp_vcf_ref snps.vcf.gz \
-	--tumor_dir /path/tumor \
-	--normal_dir /path/normal  \
-	--cram true  
-  ```
+
 
 ## Output
 
-
-
-  In Sample.RData:
-  - xx corresponds to the pre-processed data using the segmentation critical value cval_preproc (output of function preProcSample)
-  - oo_large corresponds to the processing of xx using the segmentation critical value cval_proc1 (output of function procSample(xx,cval = cval_proc1,...) )
-  - fit_large: cluster specific copy number and cellular fraction (output of emcncf(oo_large))
-  - oo_fine corresponds to the processing of xx using the segmentation critical value cval_proc2 (output of procSample(xx, cval = cval_proc2, ...))
-  - fit_fine: cluster specific copy number and cellular fraction ( output of emcncf(oo_fine))
-
+```
+results
+├── facets
+│   ├── LNEN047_TU.def_cval300_CNV.pdf #Facet plot for cval=300 (default for genome).
+│   ├── LNEN047_TU.def_cval300_CNV_spider.pdf # Spider plot (QC).
+│   ├── LNEN047_TU.def_cval300_CNV.txt # CNV segments.
+│   ├── LNEN047_TU.def_cval300_stats.txt # Ploidy and Purity.
+│   ├── LNEN047_TU.R_sessionInfo.txt # R sesion information.
+│   ├── ... 
+├── facets_stats_default_summary.txt #Summary of ploidy and purity for all samples
+└── nf-pipeline_info #nexflow info directory
+    ├── facets_dag.html
+    ├── facets_report.html
+    ├── facets_timeline.html
+    ├── facets_trace.txt
+    └── run_parameters_report.txt #custom file providing info for software versions
+```
 
 ## Common errors
+
+### Facets
 In case of low coverage you may get the following error during facets process:
   ```
   Loading required package: pctGCdata
@@ -130,8 +150,12 @@ In case of low coverage you may get the following error during facets process:
   ```
 => We advise then to decrease the parameter: min_read_count
 
-## Directed Acyclic Graph
-[![DAG](dag.png)](http://htmlpreview.github.io/?https://github.com/IARCbioinfo/template-nf/blob/master/dag.html)
+### Singularity
+The first time that the container is built from the docker image, the TMPDIR  should be defined in a non parallel file-system, you can set this like:
+
+```
+export TMPDIR=/tmp
+```
 
 ## Contributions
 
