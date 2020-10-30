@@ -139,19 +139,19 @@ SNP reference (vcf file) can be downloaded from:
 ```
 results
 ├── facets
-│   ├── LNEN047_TU.def_cval300_CNV.pdf #Facet plot for cval=300 (default for genome).
-│   ├── LNEN047_TU.def_cval300_CNV_spider.pdf # Spider plot (QC).
-│   ├── LNEN047_TU.def_cval300_CNV.txt # CNV segments.
-│   ├── LNEN047_TU.def_cval300_stats.txt # Ploidy and Purity.
-│   ├── LNEN047_TU.R_sessionInfo.txt # R sesion information.
+│   ├── LNEN047_TU.def_cval300_CNV.pdf                # Facet plot for cval=300 (default for genome).
+│   ├── LNEN047_TU.def_cval300_CNV_spider.pdf         # Spider plot (QC).
+│   ├── LNEN047_TU.def_cval300_CNV.txt                # CNV segments.
+│   ├── LNEN047_TU.def_cval300_stats.txt              # Ploidy and Purity.
+│   ├── LNEN047_TU.R_sessionInfo.txt                  # R sesion information.
 │   ├── ... 
-├── facets_stats_default_summary.txt #Summary of ploidy and purity for all samples
-└── nf-pipeline_info #nexflow info directory
+├── facets_stats_default_summary.txt                  # Summary of ploidy and purity for all samples
+└── nf-pipeline_info                                  # Nextflow info directory
     ├── facets_dag.html
     ├── facets_report.html
     ├── facets_timeline.html
     ├── facets_trace.txt
-    └── run_parameters_report.txt #custom file providing info for software versions
+    └── run_parameters_report.txt                     # Custom file providing info for software versions
 ```
 
 ## Common errors
