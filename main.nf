@@ -197,6 +197,7 @@ workflow {
 
   def ch_vcf = Channel.fromPath(params.dbsnp_vcf_ref)
     .ifEmpty { exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}" }
+    .first()
 
   print_params()
 
