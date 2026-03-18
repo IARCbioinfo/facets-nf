@@ -24,7 +24,7 @@ Table of Contents
 
 
 ## Description
-Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data.
+Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data. The pipeline now runs with Nextflow DSL2.
 
 ## Usage
   ```
@@ -49,6 +49,13 @@ Pipeline using facets for fraction and copy number estimate from tumor/normal se
    --tumor_dir /path/tumor \
    --normal_dir /path/normal  \
    --cram true  
+
+  #run on the kutral SLURM cluster
+  nextflow run iarcbioinfo/facets-nf -r v2.0 \
+   -profile kutral --ref hg38 \
+   --dbsnp_vcf_ref snps.vcf.gz \
+   --tn_file tn_pairs.txt \
+   --cohort_dir /path/CRAM
   ```
 
 ## Dependencies
@@ -115,7 +122,7 @@ SNP reference (vcf file) can be downloaded from:
 |      --pseudo-snps      | [number]	| window for pseudo-snps [def:100]|
 |**Execution options**|||
 |  --snppileup_bin	|     [path]		| Path to snppileup software (default: snp-pileup) |
-|      -profile |            [str]  |   Configuration profile to use (Available: singularity, docker)|
+|      -profile |            [str]  |   Configuration profile to use (Available: singularity, docker, kutral)|
 |**Outputs**|||
 |      --output_folder   |     [folder]  |  Folder name for output files (default: ./result) |
 |**input is CRAM**|||
@@ -129,6 +136,11 @@ SNP reference (vcf file) can be downloaded from:
 |      --suffix_normal |	     [string] |		 normal file name's specific suffix (by default _N) |
 |**Visualization**|||
 |--facets_plot| [bool] | Facets will generate a PDF output (def:true)|
+|**Kutral profile overrides**|||
+|--kutral_bind_path| [path] | Bind path used by the `kutral` singularity profile [def:/mnt/beegfs/labs/] |
+|--kutral_queue| [string] | SLURM queue used by the `kutral` profile [def:ngen-ko] |
+|--kutral_queue_size| [number] | Max queued jobs for the `kutral` profile [def:150] |
+|--kutral_exclude_hosts| [string] | Optional SLURM host exclusion list for the `kutral` profile |
 
 
 
