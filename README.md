@@ -24,7 +24,7 @@ Table of Contents
 
 
 ## Description
-Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data. The pipeline now runs with Nextflow DSL2.
+Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data. The pipeline now runs with Nextflow DSL2 and supports tumor-only FACETS using `preProcSample(... unmatched=TRUE)` on selected tumor/normal pairs.
 
 ## Usage
   ```
@@ -56,6 +56,13 @@ Pipeline using facets for fraction and copy number estimate from tumor/normal se
    --dbsnp_vcf_ref snps.vcf.gz \
    --tn_file tn_pairs.txt \
    --cohort_dir /path/CRAM
+
+  #tumor-only FACETS for selected manifest rows
+  nextflow run iarcbioinfo/facets-nf -r v2.0 \
+   -profile singularity --ref hg38 \
+   --dbsnp_vcf_ref snps.vcf.gz \
+   --tn_file tn_pairs_with_modes.txt \
+   --cohort_dir /path/CRAM
   ```
 
 ## Dependencies
@@ -79,13 +86,13 @@ See the [IARC-nf](https://github.com/IARCbioinfo/IARC-nf) repository for more in
   | --tn_file    | File containing the list of names of BAM files to be processed |
   
 ### Example of Tumor/Normal pairs file (--tn_file)
-A text file tabular separated, with the following header:
+A text file tabular separated, with the following header. The optional `pair_mode` column may be `matched` or `tumor_only`; when omitted, the pair is treated as `matched`.
 
 ```
-tumor_id	sample	tumor	normal
-sample1_T1	sample1	sample1_T.cram	sample1_N.cram
-sample2_T1	sample2	sample2_T.cram	sample2_N.cram
-sample3_T1	sample3	sample3_T.cram	sample3_N.cram
+tumor_id	sample	tumor	normal	pair_mode
+sample1_T1	sample1	sample1_T.cram	sample1_N.cram	matched
+sample2_T1	sample2	sample2_T.cram	panel_normal_01.cram	tumor_only
+sample3_T1	sample3	sample3_T.cram	sample3_N.cram	matched
 ``` 
 
 
@@ -110,11 +117,13 @@ SNP reference (vcf file) can be downloaded from:
 | Name      | type | Description     |
 |-----------|---------------|-----------------|
 |     --analysis_type |  [string] | Type of analysis: genome or exome, def: genome |
+|     --tumor_only |  [bool] | Run all directory-based pairs in tumor-only unmatched mode [def:false] |
 |      --snp_nbhd	|         [number]	| By default 1000 for genome and 250 for exome |
 |      --cval_preproc	|    [number]	| By default 35 for genome, 25 for exome|
 |      --cval_proc1	   |    [number]	| By default 150 for genome, 75 for exome |
 |      --cval_proc2	   |    [number]	| By default 300 for genome, 150 for exome |
 |     --min_read_count	|    [number]	| By default 20 for genome, 35 for exome |
+|     --unmatched_het_thresh | [number] | Heterozygous VAF threshold used for tumor-only unmatched FACETS [def:0.1] |
 |      --m_cval         |    [bool]  |  Use multiple cval values (500,1000,1500) to study the number of segments [def:true] |
 |**SNP-pileup options** |||
 |  --min-map-quality	 |  [number]	| Minimum read mapping quality [def:15]|
@@ -131,6 +140,10 @@ SNP reference (vcf file) can be downloaded from:
 |      --tumor_dir  |   [directory] |      Directory containing tumor bam/cram files|
 |      --normal_dir |   [directory] |      Directory containing normal bam/cram files|
 |      --cohort_dir  |  [directory] |      Directory containing all bam/cram files |
+|**Tumor-only mode**|||
+|      `pair_mode` column | [string] | In `--tn_file`, set `matched` or `tumor_only` per pair; default is `matched` when missing |
+|      --tumor_only | [bool] | Applies tumor-only mode to all directory-based tumor/normal pairs |
+|      --normal_dir | [directory] | Still required for directory-based tumor-only mode because FACETS needs an unrelated normal in the pileup |
 |**Files suffixes**|||
 |      --suffix_tumor	|     [string] |		 tumor file name's specific suffix (by default _T)|
 |      --suffix_normal |	     [string] |		 normal file name's specific suffix (by default _N) |
