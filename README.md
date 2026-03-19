@@ -1,5 +1,5 @@
 # facets-nf
-## current version 2.0
+## current version 3.0
 
 [![CircleCI](https://circleci.com/gh/IARCbioinfo/template-nf.svg?style=svg)](https://circleci.com/gh/IARCbioinfo/facets-nf)
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/iarcbioinfo/facets-nf/)
@@ -24,7 +24,9 @@ Table of Contents
 
 
 ## Description
-Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data. The pipeline now runs with Nextflow DSL2 and supports tumor-only FACETS using `preProcSample(... unmatched=TRUE)` on selected tumor/normal pairs.
+Pipeline using facets for fraction and copy number estimate from tumor/normal sequencing data. 
+The pipeline now runs with Nextflow DSL2 and supports tumor-only FACETS using `preProcSample(... unmatched=TRUE)` on selected tumor/replace-normal pairs.
+The normal replacement can be inferred using the somalier pipeline (relate command).
 
 ## Usage
   ```
@@ -205,4 +207,4 @@ export TMPDIR=/tmp
   | Matthieu Foll*    |            follm@iarc.fr | Developer to contact for support (link to specific gitter chatroom) |
   | Catherine Voegele    |            voegelec@iarc.fr | Developer |
   | Nicolas Alcala    |            alcalan@fellows.iarc.fr | Developer |
-  | Alex Di Genova | digenovaa@fellows.iarc.fr| Developer |
+  | Alex Di Genova | alex.digenova@uoh.cl | Developer |
