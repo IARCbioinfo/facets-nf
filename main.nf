@@ -14,17 +14,20 @@ def show_help() {
 
     Mandatory arguments:
       --tn_file              [file]    File containing list of T/N bam/cram files to be processed (T.bam, N.bam)
+                                         Optional column: pair_mode = matched|tumor_only
       --ref                  [string]  Version of genome: hg19 or hg38 or hg18 [def:hg38]
       --dbsnp_vcf_ref        [path]    Path to dbsnp vcf reference file (with name of ref file)
 
     Optional parameters:
       --analysis_type        [string]  Type of analysis: genome or exome, def: genome
+      --tumor_only           [bool]    Run all directory-based pairs in tumor-only unmatched mode [def:false]
 
       --snp_nbhd             [number]  By default 1000 for genome and 250 for exome
       --cval_preproc         [number]  By default 35 for genome, 25 for exome
       --cval_proc1           [number]  By default 150 for genome, 75 for exome
       --cval_proc2           [number]  By default 300 for genome, 150 for exome
       --min_read_count       [number]  By default 20 for genome, 35 for exome
+      --unmatched_het_thresh [number]  Heterozygous VAF threshold in tumor-only mode [def:0.1]
 
       --m_cval               [bool]    Use multiple cval values (500,1000,1500) to study the number of segments [def:true]
 
@@ -73,11 +76,11 @@ process snppileup {
   label 'load_snpp'
 
   input:
-  tuple val(tumor_id), path(tumor), path(tumor_index), path(normal), path(normal_index)
+  tuple val(tumor_id), val(pair_mode), path(tumor), path(tumor_index), path(normal, stageAs: 'normal/*'), path(normal_index, stageAs: 'normal/*')
   path vcf
 
   output:
-  tuple val(tumor_id), path("${tumor_id}.csv.gz"), emit: snppileup_result
+  tuple val(tumor_id), val(pair_mode), path("${tumor_id}.csv.gz"), emit: snppileup_result
 
   script:
   if (params.debug == false) {
@@ -113,7 +116,7 @@ process facets {
   publishDir "${params.output_folder}/facets", mode: 'copy'
 
   input:
-  tuple val(tumor_id), path(snppileup_counts)
+  tuple val(tumor_id), val(pair_mode), path(snppileup_counts)
 
   output:
   path("${tumor_id}.def_cval${params.cval_proc2}_stats.txt"), emit: stats_summary
@@ -132,29 +135,58 @@ process facets {
   script:
   def plot = params.output_pdf ? 'PDF' : 'NOPDF'
   def mcval = params.m_cval ? 'MCVAL' : 'CVAL'
+  def is_tumor_only = pair_mode == 'tumor_only'
+  def facets_script = is_tumor_only ? "${baseDir}/bin/facets.tumor_only.cval.r" : "${baseDir}/bin/facets.cval.r"
   if (params.debug == false) {
-    """
-    Rscript ${baseDir}/bin/facets.cval.r \\
-            ${snppileup_counts} \\
-            ${params.ref} ${params.snp_nbhd} \\
-            ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
-            ${mcval} ${plot}
-    """
+    if (is_tumor_only) {
+      """
+      Rscript ${facets_script} \\
+              ${snppileup_counts} \\
+              ${params.ref} ${params.snp_nbhd} \\
+              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
+              ${params.unmatched_het_thresh} ${mcval} ${plot}
+      """
+    } else {
+      """
+      Rscript ${facets_script} \\
+              ${snppileup_counts} \\
+              ${params.ref} ${params.snp_nbhd} \\
+              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
+              ${mcval} ${plot}
+      """
+    }
   } else {
-    """
-    echo Rscript ${baseDir}/bin/facets.cval.r \\
-            ${snppileup_counts} \\
-            ${params.ref} ${params.snp_nbhd} \\
-            ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
-            ${mcval} ${plot}
-    #we touch some dummy file
-    touch ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
-    touch ${tumor_id}.def_cval${params.cval_proc2}_CNV.txt
-    touch ${tumor_id}.def_cval${params.cval_proc2}_CNV_spider.pdf
-    touch ${tumor_id}.R_sessionInfo.txt
-    echo "${tumor_id}\t0.8\t2\t0.8\t0.7" > ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
-    echo "${tumor_id}\t0.8\t2\t0.8\t0.7" >> ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
-    """
+    if (is_tumor_only) {
+      """
+      echo Rscript ${facets_script} \\
+              ${snppileup_counts} \\
+              ${params.ref} ${params.snp_nbhd} \\
+              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
+              ${params.unmatched_het_thresh} ${mcval} ${plot}
+      #we touch some dummy file
+      touch ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV_spider.pdf
+      touch ${tumor_id}.R_sessionInfo.txt
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" > ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" >> ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      """
+    } else {
+      """
+      echo Rscript ${facets_script} \\
+              ${snppileup_counts} \\
+              ${params.ref} ${params.snp_nbhd} \\
+              ${params.cval_preproc} ${params.cval_proc1} ${params.cval_proc2} ${params.min_read_count} \\
+              ${mcval} ${plot}
+      #we touch some dummy file
+      touch ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV.txt
+      touch ${tumor_id}.def_cval${params.cval_proc2}_CNV_spider.pdf
+      touch ${tumor_id}.R_sessionInfo.txt
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" > ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      echo "${tumor_id}\t0.8\t2\t0.8\t0.7" >> ${tumor_id}.def_cval${params.cval_proc2}_stats.txt
+      """
+    }
   }
 }
 
@@ -192,8 +224,8 @@ workflow {
   }
 
   def tn_pairs = params.tn_file ?
-    parse_tn_file(params.tn_file, params.cohort_dir, params.cram) :
-    build_tn_pairs_from_dir(params.tumor_dir, params.normal_dir, params.suffix_tumor, params.suffix_normal, params.cram)
+    parse_tn_file(params.tn_file, params.cohort_dir, params.cram, params.tumor_only) :
+    build_tn_pairs_from_dir(params.tumor_dir, params.normal_dir, params.suffix_tumor, params.suffix_normal, params.cram, params.tumor_only)
 
   def ch_vcf = Channel.fromPath(params.dbsnp_vcf_ref)
     .ifEmpty { exit 1, "VCF file not found: ${params.dbsnp_vcf_ref}" }
@@ -242,12 +274,15 @@ workflow {
 */
 
 //funtion that return the tn_bambai channel from a set of paths
-def build_tn_pairs_from_dir(tumor_dir, normal_dir, suffix_tumor, suffix_normal, is_cram) {
+def build_tn_pairs_from_dir(tumor_dir, normal_dir, suffix_tumor, suffix_normal, is_cram, tumor_only) {
   //we parse the tumor file and the normal files
   def tumor_files = parse_files_dir(tumor_dir, suffix_tumor, is_cram)
-  def normal_files = parse_files_dir(normal_dir, suffix_normal, is_cram)
+  def pair_mode = tumor_only ? 'tumor_only' : 'matched'
+  def tn_pairs = tumor_files
+    .join(parse_files_dir(normal_dir, suffix_normal, is_cram))
+    .map { tumor_id, tumor, tumor_index, normal, normal_index -> [tumor_id, pair_mode, tumor, tumor_index, normal, normal_index] }
+
   //we create the tumor normal pairs Channel with index and sample names
-  def tn_pairs = tumor_files.join(normal_files)
   return tn_pairs
 }
 
@@ -276,14 +311,17 @@ def parse_files_dir(dir, suffix, is_cram) {
 }
 
 //we read the pairs from tn_file
-def parse_tn_file(tn_file, cohort_path, is_cram) {
+def parse_tn_file(tn_file, cohort_path, is_cram, tumor_only) {
   // [sample t[.bam,cram] t[.bai,crai] n[.bam,.cram] n[.bai,.crai]]
   def index_ext = is_cram ? '.crai' : '.bai'
   def tn_pairs = Channel.fromPath(tn_file)
     .splitCsv(header: true, sep: '\t', strip: true)
     .map { row ->
+      def pair_mode = normalize_pair_mode(row.pair_mode ?: row.mode ?: 'matched')
+      assert row.normal != null : "tn_file row for ${row.tumor_id} must include a normal file"
       [
         row.tumor_id,
+        pair_mode,
         file("${cohort_path}/${row.tumor}"),
         file("${cohort_path}/${row.tumor}${index_ext}"),
         file("${cohort_path}/${row.normal}"),
@@ -294,6 +332,17 @@ def parse_tn_file(tn_file, cohort_path, is_cram) {
 
   //we return the channel
   return tn_pairs
+}
+
+def normalize_pair_mode(mode) {
+  def normalized = mode?.toString()?.trim()?.toLowerCase()?.replace('-', '_')
+  if (normalized in ['matched', 'tumor_only']) {
+    return normalized
+  }
+  if (normalized in ['tumoronly', 'tonly', 'unmatched']) {
+    return 'tumor_only'
+  }
+  throw new IllegalArgumentException("Unsupported pair mode '${mode}'. Use 'matched' or 'tumor_only'.")
 }
 
 // print the calling parameter to the log and a log file
